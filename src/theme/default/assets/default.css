@@ -1,0 +1,341 @@
+/* superior | direita | inferior | esquerda */
+body {
+  font-family: "Verdana", "Tahoma";
+  font-size: medium;
+  color: #999;
+  background-color: #CCC;
+  height:100%;
+  margin:auto;
+  min-width:800px;
+  width:50%;
+  margin-bottom:25px;
+  padding:0;
+}
+
+::selection {
+  background: orange;
+  color: black;
+}
+
+iframe, img {
+  background-color: #EEE;
+  width:100%;
+  /*height:auto;*/
+}
+
+pre
+{
+  background-color: #EEE;
+  color: black;
+}
+
+.content
+{
+  background-color: #FFF;
+  margin: 15px 0 20px 0;
+  min-height: 95vh;
+  padding: 0 30px 0 30px;
+}
+
+a
+{
+  color: #ff7f2a;
+  text-decoration: none;
+}
+
+p{
+  line-height: 140%;
+  text-align:left;
+}
+
+a:visited
+{
+  color: #ff7f2a;
+  text-decoration: none;
+}
+
+a:hover
+{
+  color: #ff7f2a;
+  text-decoration: underline;
+}
+
+ul {
+  list-style-type: none;
+  margin: 10px 0 35px 0;
+  padding:0;
+}
+
+li {
+  color: #000;
+  padding:0;
+}
+
+h1,h2,h3,h4,h5,h6
+{
+  font-family: "Tahoma", "Consolas", "Verdana";
+  color: #000;
+  font-weight:normal;
+  margin: 20px 0 5px 0;
+}
+
+h4
+{
+  color: #999;
+  font-size:smaller;
+}
+
+h5
+{
+  color: #999;
+  font-size:small;
+}
+
+h6
+{
+  color: #999;
+  font-size:x-small;
+}
+
+header
+{
+  color: #ff7f2a;
+  text-transform: uppercase;
+  text-align:center;
+  height:280px;
+  background-image: linear-gradient(rgba(255, 255 ,255, 1), rgba(253, 253, 255, 0.9)), url("bg.jpg");
+  background-size: 140px 280px;
+  background-repeat: repeat-x;
+  margin: 0;
+  padding: 15px 0 0 0;
+}
+
+header ul li
+{
+  display: inline;
+  padding:0;
+}
+
+header h1
+{
+  font-size: 3em;
+  color: #000000;
+  margin-bottom:15px;
+  font-family:"Yu Gothic" ,"Verdana", "Segoe UI", "Tahoma";
+  font-weight:normal;
+  margin: 80px 0 0 0;
+}
+
+article {
+  display: block;
+}
+
+footer .content{
+  text-align: right;
+}
+
+.archive-list
+{
+  border-left: 3px solid #BBBBBB;
+  font-size: large;
+}
+
+.archive-list p, post h3
+{
+  margin: 0;
+  padding:0;
+  color: #BBBBBB;
+  line-height:12px;
+  font-size:small;
+  text-transform:none;
+}
+
+.archive-list li
+{
+  font-size:x-small;
+  margin: 10px;
+  margin-bottom: 2px;
+}
+
+.archive-list li:hover
+{
+  border-left: 5px solid orange;
+  padding-left: 10px;
+  margin-left: -3px;
+}
+
+.archive-list a
+{
+  font-family: "Consolas", "Tahoma";
+  font-size:large;
+  /*text-transform:uppercase;*/
+  text-transform:uppercase;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #000;
+}
+
+.archive-list a:hover
+{
+  color: #ff7f2a;
+  text-decoration: none;
+}
+
+/* Quote */
+blockquote {
+  background: #f9f9f9;
+  /*border-left: 10px solid #ccc;*/
+  margin: 1.0em 10px;
+  padding: 0.5em 10px;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+
+blockquote:before {
+  color: orange;
+  content: open-quote;
+  font-size: 3em;
+  line-height: 0.3em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote:after {
+  color: orange;
+  content: close-quote;
+  font-size: 3em;
+  line-height: 0.3em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+
+blockquote p {
+  display: inline;
+}
+
+/* Code syntax highlight */
+/**
+ * GHColors theme by Avi Aryan (http://aviaryan.in)
+ * Inspired by Github syntax coloring
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #393A34;
+    font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    font-size: small; 
+    line-height: 0.6em;
+
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    background: #b3d4fc;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border: 1px solid #dddddd;
+    background-color: white;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .2em;
+    padding-top: 1px; padding-bottom: 1px;
+    background: #f8f8f8;
+    border: 1px solid #dddddd;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #999988; font-style: italic;
+}
+
+.token.namespace {
+    opacity: .7;
+}
+
+.token.string,
+.token.attr-value {
+    color: #e3116c;
+}
+.token.punctuation,
+.token.operator {
+    color: #393A34; /* no highlight */
+}
+
+.token.entity,
+.token.url,
+.token.symbol,
+.token.number,
+.token.boolean,
+.token.variable,
+.token.constant,
+.token.property,
+.token.regex,
+.token.inserted {
+    color: #36acaa;
+}
+
+.token.atrule,
+.token.keyword,
+.token.attr-name,
+.language-autohotkey .token.selector {
+    color: #00a4db;
+}
+
+.token.function,
+.token.deleted,
+.language-autohotkey .token.tag {
+    color: #9a050f;
+}
+
+.token.tag,
+.token.selector,
+.language-autohotkey .token.keyword {
+    color: #00009f;
+}
+
+.token.important,
+.token.function,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.project 
+{
+  margin-bottom: 30px;
+  background-image: linear-gradient(white, rgba(150, 150, 150, 0.1));
+  padding: 15px 10px 30px 10px;
+}
