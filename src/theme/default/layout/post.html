@@ -3,12 +3,13 @@
   {{include "include/header.html"}}
   <body>
     <div class="content">
+      <main>
       {{include "include/top.html"}}
       <h2>{{post.title}}</h2>
-      <time
-        datetime="{{post.year}}-{{post.month}}-{{post.day}}:00:00+02:00">{{post.year}}-{{post.month_name}}-{{post.day}}</time>
+      <time datetime="{{post.year}}-{{post.month}}-{{post.day}}:00:00+02:00">{{post.year}}-{{post.month_name}}-{{post.day}}</time>
       <article>{{post.body}}</article>
-      {{include "include/footer.html"}}
+      </main>
     </div>
+    {{include "include/footer.html"}}
   </body>
 </html>

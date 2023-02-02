@@ -4,33 +4,21 @@
   <meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <link rel="stylesheet" href="assets/default.css">
-  <title>Handmade Gamedev - Input de joystick com XInput</title>
+  <title>[HANDMADE GAMEDEV] - Input de joystick com XInput</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
 </head>
 
   <body>
     <div class="content">
+      <main>
       <header>
-  <h1>[Handmade Gamedev]</h2>
-  <!-- Nav bar -->
-  <nav>
-    <ul>
-      <li><a href="index.html">HOME</a></li>
-      <li>|</li>
-      <li><a href="about.html">ABOUT</a></li>
-      <li>|</li>
-      <li><a href="http://github.com/marciovmf">GITHUB</a></li>
-      <li>|</li>
-      <li><a href="http://twitter.com/marciovmf">TWITTER</a></li>
-      <li>|</li>
-      <li><a href="http://youtube.com/gamedevlog">YOUTUBE</a></li>
-    </ul>
-  </nav>
+  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
+  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+</div>
 </header>
 
       <h2>Input de joystick com XInput</h2>
-      <time
-        datetime="2018-01-08:00:00+02:00">2018-JAN-08</time>
+      <time datetime="2018-01-08:00:00+02:00">2018-jan-08</time>
       <article><p>Uma das premissas que adotei para o desenvolvimento da minha game&nbsp;<a href="https://github.com/marciovmf/ldare">engine</a>&nbsp;é usar ao máximo os recursos nativos de cada sistema e evitar dependências tanto para o programador, quanto para o jogador. E foi pesquisando soluções nativas para implementar suporte a joystick que encontrei o&nbsp;<a href="https://msdn.microsoft.com/pt-br/library/windows/desktop/ee417014(v=vs.85).aspx">XInput</a>, que veio substituir o antigo <a href="https://msdn.microsoft.com/pt-br/library/windows/desktop/ee416842(v=vs.85).aspx">DirectInput</a>&nbsp;. Neste post, vou mostrar como utilizei o XINPUT para dar suporte a joystick na minha engine e mais importante, sem forçar uma dependência em tempo de execução.</p>
 <h2>Múltiplas versões</h2>
 <p>Existem <a href="https://msdn.microsoft.com/pt-br/library/windows/desktop/hh405051(v=vs.85).aspx">3 versões</a>&nbsp;do XINPUT, cada uma distribuída em uma versão diferente do windows.</p>
@@ -241,14 +229,14 @@ static inline void Win32_processGamepadInput(ldare::Input&amp; gameInput)
 <p>O código com toda a implementação pode ser acessado no <a href="https://github.com/marciovmf/ldare">repo do projeto</a> no github.</p>
 <p>Happy Coding.</p>
 </article>
-      	<footer>
-      <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> |
-      <a href="http://github.com/marciovmf">GITHUB</a> |
-      <a href="http://twitter.com/marciovmf">TWITTER</a> |
-      <a href="http://youtube.com/gamedevlog">YOUTUBE</a>
-      <p><div>Powered by <a href="http://github.com/marciovmf/unamazing">(un)amazing</a>.</div></p>
-	</footer>
-
+      </main>
     </div>
+    <footer>
+  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+ </div>
+  <div> © 2023 Márcio Freitas </div>
+  <div>Generated with <a href="http://github.com/marciovmf/static">static</a>. </div>
+</footer>
+
   </body>
 </html>
