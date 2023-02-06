@@ -5,8 +5,9 @@
     <div class="content">
       <main>
       {{include "include/top.html"}}
-      <h2>{{post.title}}</h2>
-      <time datetime="{{post.year}}-{{post.month}}-{{post.day}}:00:00+02:00">{{post.year}}-{{post.month_name}}-{{post.day}}</time>
+      <h2>{{post.title}}
+        <time datetime="{{post.year}}-{{post.month}}-{{post.day}}:00:00+02:00">{{post.year}}-{{post.month_name}}-{{post.day}}</time>
+      </h2>
       <article>{{post.body}}</article>
       </main>
     </div>
