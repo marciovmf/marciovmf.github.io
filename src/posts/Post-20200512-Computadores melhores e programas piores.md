@@ -2,6 +2,8 @@ Este post vai ser um pouco diferente do que costumo escrever. Trata-se de um exe
 
 Gostaria de introduzir com este curto vídeo Grace Hopper para nos lembrar que computadores, desde os mais rudimentares, já operavam em escalas de velocidade muito altas. E ainda na década de 50, havia uma cultura de aproveitar cada nano segundo de processamento da CPU.
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9eyFDBPk4Yw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 Por outro lado, de volta ao ano de 2020, temos grandes empresas de tecnologia se gabando de novas linguagens capazes de compilar e imprimir “Hello World” em um console em “apenas” **22ms** como se vê nesse screenshot do site da linguagem [Dart](https://dart.dev/).
 
 ![](https://handmadegame.dev/assets/images/dart.png)
@@ -37,7 +39,7 @@ Repare que não existem efeitos colaterais. Atribuir um valor a uma variável n�
 
 Se este programa se manifestasse de maneira tangível no mundo real, poderia muito bem se parecer com a imagem abaixo.
 
-![](https://handmadegame.dev/assets/images/lamp_button.png)
+![Lamp button](https://handmadegame.dev/assets/images/lamp_button.png)
 
 ## O problema da lâmpada em 2020
 
@@ -51,7 +53,7 @@ Ainda sim, alguns [Design Patterns](https://pt.wikipedia.org/wiki/Padr%C3%A3o_de
 
 Software que caso se materializasse como algo tangível – de maneira similar ao exemplo anterior – certamente se pareceria com a imagem abaixo.
 
-![](https://handmadegame.dev/assets/images/oop.png)
+![Rube Goldberg machine](https://handmadegame.dev/assets/images/oop.png)
 
 Como eu disse no início deste post, a imagem acima é a tal imagem de background do Google Meeting que me chamou a atenção, pois imediatamente associei aos valores e dogmas que regem o desenvolvimento “moderno” de software. Muitas coisas são colocadas como indispensáveis e corretas e se antepõem a razão de ser do software em si: resolver o problema de maneira eficiente.
 
