@@ -7,7 +7,7 @@ Gostaria de introduzir com este curto vídeo Grace Hopper para nos lembrar que c
 
 Por outro lado, de volta ao ano de 2020, temos grandes empresas de tecnologia se gabando de novas linguagens capazes de compilar e imprimir “Hello World” em um console em “apenas” **22ms** como se vê nesse screenshot do site da linguagem [Dart](https://dart.dev/).
 
-![](https://handmadegame.dev/assets/images/dart.png)
+![](assets/images/dart.png)
 
 Se você chegou no planeta Terra neste exato minuto, pode não estar ciente de que há uma pandemia mundial e todo negócio que pode, está funcionando em regime de home office. Na Aquiris onde trabalho, não está sendo diferente. Estamos utilizando diversas soluções para manter a comunicação fluindo como Discord e Google Meeting.
 
@@ -40,7 +40,7 @@ Repare que não existem efeitos colaterais. Atribuir um valor a uma variável n�
 
 Se este programa se manifestasse de maneira tangível no mundo real, poderia muito bem se parecer com a imagem abaixo.
 
-![Lamp button](https://handmadegame.dev/assets/images/lamp_button.png)
+![Lamp button](assets/images/lamp_button.png)
 
 ## O problema da lâmpada em 2020
 
@@ -54,7 +54,7 @@ Ainda sim, alguns [Design Patterns](https://pt.wikipedia.org/wiki/Padr%C3%A3o_de
 
 Software que caso se materializasse como algo tangível – de maneira similar ao exemplo anterior – certamente se pareceria com a imagem abaixo.
 
-![Rube Goldberg machine](https://handmadegame.dev/assets/images/oop.png)
+![Rube Goldberg machine](assets/images/oop.png)
 
 Como eu disse no início deste post, a imagem acima é a tal imagem de background do Google Meeting que me chamou a atenção, pois imediatamente associei aos valores e dogmas que regem o desenvolvimento “moderno” de software. Muitas coisas são colocadas como indispensáveis e corretas e se antepõem a razão de ser do software em si: resolver o problema de maneira eficiente.
 

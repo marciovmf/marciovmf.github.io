@@ -5,9 +5,9 @@ Uma das premissas que adotei para o desenvolvimento da minha game [engine](http
 
 Existem [3 versões](https://msdn.microsoft.com/pt-br/library/windows/desktop/hh405051(v=vs.85).aspx) do XINPUT, cada uma distribuída em uma versão diferente do windows.
 
-*   XInput 1.4:  Nativa no Windows 8 e obrigatória para Windows Store apps ou desktop apps para Windows8.
-*   XInput 9.1.0: XInput 9.1.0 nativa no Windows Vista, Windows 7, e Windows 8.
-*   XInput 1.3: XInput 1.3 é parte do [DirectX SDK](https://msdn.microsoft.com/en-us/library/windows/desktop/ee663274(v=vs.85).aspx) com suporte pra Windows Vista, Windows 7, e Windows 8.
+   XInput 1.4:  Nativa no Windows 8 e obrigatória para Windows Store apps ou desktop apps para Windows8.
+   XInput 9.1.0: XInput 9.1.0 nativa no Windows Vista, Windows 7, e Windows 8.
+   XInput 1.3: XInput 1.3 é parte do [DirectX SDK](https://msdn.microsoft.com/en-us/library/windows/desktop/ee663274(v=vs.85).aspx) com suporte pra Windows Vista, Windows 7, e Windows 8.
 
 ## Decidindo que versão usar
 

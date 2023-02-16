@@ -1,7 +1,7 @@
 {{"Aspect Ration e Jogos 2D"}}
 Em jogos 2D onde usualmente se emprega uma [projeção ortográfica](https://en.wikipedia.org/wiki/Orthographic_projection), o tamanho e proporção dos elementos da cena está intimamente ligado ao aspect ratio. [Aspect ratio](https://en.wikipedia.org/wiki/Aspect_ratio_(image)) é a razão entre a largura e altura da resolução em que se está renderizando. Não considerar esta razão pode resultar em deformações na imagem, o que raramente é o que se deseja na maioria dos jogos.
 
-![aspect ration deformado](https://handmadegame.dev/assets/images/ratio_wrong.gif)
+![aspect ration deformado](assets/images/ratio_wrong.gif)
 
 Existem, entretanto, situações onde não é possível garantir que o [viewport](https://en.wikipedia.org/wiki/Viewport) tenha um aspect ratio correto. Seja por que a janela foi redimensionada ou simplesmente por que a resolução que queremos não é suportada.
 
@@ -40,7 +40,7 @@ Novamente, longe do ideal para jogos mobile.
 
 sta foi a opção que decidi implementar, e consiste calcular um viewport com aspecto correto com base no espaço disponível.
 
-![Aspect ratio com barras dinâmicas](https://handmadegame.dev/assets/images/ratio_correct.gif)
+![Aspect ratio com barras dinâmicas](assets/images/ratio_correct.gif)
 
 ### Prós:
 Certeza do viewport com aspect ratio correto.

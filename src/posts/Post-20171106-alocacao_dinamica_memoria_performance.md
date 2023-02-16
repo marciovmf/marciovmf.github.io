@@ -102,7 +102,7 @@ E se precisarmos de mais memória ? Basta alocar um novo bloco, e inseri-lo na l
 A única limitação dessa abordagem é que as alocações precisam ser sempre do mesmo tamanho evidentemente. O que nem sempre é um problema. Pode-se ter algumas destas ‘heaps’ de tamanhos diferentes para objetos diferentes que precisem ser alocados recorrentemente.
 O diagrama abaixo deve deixar o conceito um pouco mais claro.
 
-![](https://handmadegame.dev/assets/images/heap_diagram.png)
+![](assets/images/heap_diagram.png)
 
 Cada bloco alocado tem um pequeno cabeçalho, que utilizo para conectar com o próximo bloco livre ou ocupado da lista. A Heap por sua vez, é uma estrutura que guarda toda a informação referentes as listas e ao bloco de memória retornado pelo sistema operacional. Como se pode ver no código a seguir.
 
