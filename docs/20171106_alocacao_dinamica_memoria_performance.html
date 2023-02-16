@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" href="assets/default.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-	<title>[HANDMADE GAMEDEV] - Alocação dinâmica de memória x Performance</title>
+	<title>[HANDMADE GAMEDEV] - Alocação dinâmica de memóra e performance</title>
 </head>
 
   <body>
@@ -17,14 +17,14 @@
 </div>
 </header>
 
-      <h2>Alocação dinâmica de memória x Performance
+      <h2>Alocação dinâmica de memóra e performance
         <time datetime="2017-11-06:00:00+02:00">2017-oct-06</time>
       </h2>
       <article><p>33.333 milissegundos. Este é o tempo que uma engine de jogos tem para fazer todo o processamento necessário durante um frame se quiser manter uma taxa de 30 frames por segundo.</p><p>Quando se tem um budget tão restrito de tempo, deve-se evitar incorrer em dois tipos de situação:  realizar operações potencialmente lentas e realizar operações com tempo de execução variável/desconhecido. Alocação dinâmica de memória é exatamente a combinação destas duas situações. Neste post vou falar sobre como alocação dinâmica de memória pode comprometer o desempenho de um jogo e como estou abordando o problema na minha <a href="https://github.com/marciovmf/ldare">engine</a>.</p><p>Independente da linguagem a coisa funciona mais ou menos da mesma forma. Tudo começa com uma chamada aparentemente inocente como esta:</p><pre><code>RenderCommand *command = new
 RenderCommand();
 </code></pre><p>O compilador precisa separar esta chamada em 2 operações diferentes; uma para alocar memória e outra para inicializar a memória alocada, chamando o construtor da classe.</p><pre><code>RenderCommand *command = _new (sizeof(RenderCommand));
 command->RenderCommand();
-</code></pre><p>O operador global &#95;&#95;new (considerando C++ nesse caso) desce até a <a href="https://en.wikipedia.org/wiki/C_standard_library">stdlib</a> para fazer a alocação usando a função <a href="http://www.cplusplus.com/reference/cstdlib/malloc/">malloc</a>:</p><pre><code>void *operator new(size_t size)
+</code></pre><p>O operador global &#95;&#95;new (considerando C++ nesse caso) desce até a <a href="https://en.wikipedia.org/wiki/C<em>standard</em>library">stdlib</a> para fazer a alocação usando a função <a href="http://www.cplusplus.com/reference/cstdlib/malloc/">malloc</a>:</p><pre><code>void *operator new(size_t size)
 {
   return malloc(sie);
 }
@@ -100,7 +100,7 @@ namespace ldare
 }
 
 #endif
-</code></pre><p>Outro benefício que este método oferece, é que é fácil saber quanta memória está sendo usada para cada coisa. Bastando ler o valor **totalUsed** de cada **Heap** pra se ter um report preciso de que tipo de quanta memória cada tipo de coisa está ocupando.<br>A implementação da alocação e liberação de memória a partir desta</p><pre><code>namespace ldare
+</code></pre><p>Outro benefício que este método oferece, é que é fácil saber quanta memória está sendo usada para cada coisa. Bastando ler o valor <strong>totalUsed</strong> de cada <strong>Heap</strong> pra se ter um report preciso de que tipo de quanta memória cada tipo de coisa está ocupando.<br>A implementação da alocação e liberação de memória a partir desta</p><pre><code>namespace ldare
 {
   //---------------------------------------------------------------------------
   // Get Memory from heap
@@ -211,7 +211,7 @@ namespace ldare
     heap->freeMemList = allocationHeader;
   }
 } //namespace ldare
-</code></pre><h2>Nada de paranóia</h2><p>O objetivo aqui não é de maneira nenhuma estabelecer um dogma ou alguma paranóia irracional quanto a alocação dinâmica de memória, mas demonstrar o custo real e o impacto do seu uso inadvertido.<br>Relembrando a frase célebre de <a href="https://pt.wikipedia.org/wiki/Charles_Antony_Richard_Hoare">Tony Hoare</a>, popularizada por <a href="https://pt.wikipedia.org/wiki/Donald_Knuth): “Otimização prematura é a raiz de todo mal”. O que neste caso significa: se precisar alocar memória em 1 frame e constatar (de preferência com um profiller">Donald Knuth</a> que não há impacto, seja feliz e poupe seu tempo com um belo **new** . Recorra a soluções mais complicadas **se** e **quando** for necessário. Como no core loop de uma game engine ;D.<br>Happy **#GameDev**‘ing</p></article>
+</code></pre><h2>Nada de paranóia</h2><p>O objetivo aqui não é de maneira nenhuma estabelecer um dogma ou alguma paranóia irracional quanto a alocação dinâmica de memória, mas demonstrar o custo real e o impacto do seu uso inadvertido.<br>Relembrando a frase célebre de <a href="https://pt.wikipedia.org/wiki/Charles<em>Antony</em>Richard<em>Hoare">Tony Hoare</a>, popularizada por <a href="https://pt.wikipedia.org/wiki/Donald</em>Knuth): “Otimização prematura é a raiz de todo mal”. O que neste caso significa: se precisar alocar memória em 1 frame e constatar (de preferência com um profiller">Donald Knuth</a> que não há impacto, seja feliz e poupe seu tempo com um belo <strong>new</strong> . Recorra a soluções mais complicadas <strong>se</strong> e <strong>quando</strong> for necessário. Como no core loop de uma game engine ;D.<br>Happy <strong>#GameDev</strong>‘ing</p></article>
       </main>
     </div>
     <footer>

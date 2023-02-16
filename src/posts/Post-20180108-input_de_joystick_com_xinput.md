@@ -1,4 +1,4 @@
-
+{{"Input de joystick com XInput"}}
 Uma das premissas que adotei para o desenvolvimento da minha game [engine](https://github.com/marciovmf/ldare) é usar ao máximo os recursos nativos de cada sistema e evitar dependências tanto para o programador, quanto para o jogador. E foi pesquisando soluções nativas para implementar suporte a joystick que encontrei o [XInput](https://msdn.microsoft.com/pt-br/library/windows/desktop/ee417014(v=vs.85).aspx), que veio substituir o antigo [DirectInput](https://msdn.microsoft.com/pt-br/library/windows/desktop/ee416842(v=vs.85).aspx) . Neste post, vou mostrar como utilizei o XINPUT para dar suporte a joystick na minha engine e mais importante, sem forçar uma dependência em tempo de execução.
 
 ## Múltiplas versões

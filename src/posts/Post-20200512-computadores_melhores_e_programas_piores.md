@@ -1,3 +1,4 @@
+{{"Computadores melhores e Programas piores"}}
 Este post vai ser um pouco diferente do que costumo escrever. Trata-se de um exercício de observação e questionamento das metodologias que nós – como indústria – temos adotado e praticado e como isso tem afetado a qualidade e eficiência do programas escritos na última década, no mínimo.
 
 Gostaria de introduzir com este curto vídeo Grace Hopper para nos lembrar que computadores, desde os mais rudimentares, já operavam em escalas de velocidade muito altas. E ainda na década de 50, havia uma cultura de aproveitar cada nano segundo de processamento da CPU.

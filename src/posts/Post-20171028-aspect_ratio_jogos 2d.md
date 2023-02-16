@@ -1,3 +1,4 @@
+{{"Aspect Ration e Jogos 2D"}}
 Em jogos 2D onde usualmente se emprega uma [projeção ortográfica](https://en.wikipedia.org/wiki/Orthographic_projection), o tamanho e proporção dos elementos da cena está intimamente ligado ao aspect ratio. [Aspect ratio](https://en.wikipedia.org/wiki/Aspect_ratio_(image)) é a razão entre a largura e altura da resolução em que se está renderizando. Não considerar esta razão pode resultar em deformações na imagem, o que raramente é o que se deseja na maioria dos jogos.
 
 ![aspect ration deformado](https://handmadegame.dev/assets/images/ratio_wrong.gif)

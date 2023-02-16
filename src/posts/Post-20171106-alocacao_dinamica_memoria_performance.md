@@ -1,3 +1,4 @@
+{{"Alocação dinâmica de memóra e performance"}}
 33.333 milissegundos. Este é o tempo que uma engine de jogos tem para fazer todo o processamento necessário durante um frame se quiser manter uma taxa de 30 frames por segundo.
 
 Quando se tem um budget tão restrito de tempo, deve-se evitar incorrer em dois tipos de situação:  realizar operações potencialmente lentas e realizar operações com tempo de execução variável/desconhecido. Alocação dinâmica de memória é exatamente a combinação destas duas situações. Neste post vou falar sobre como alocação dinâmica de memória pode comprometer o desempenho de um jogo e como estou abordando o problema na minha [engine](https://github.com/marciovmf/ldare).
