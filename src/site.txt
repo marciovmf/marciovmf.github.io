@@ -1,6 +1,6 @@
 site.name = "[HANDMADE GAMEDEV]"
 site.url = "http://handmadegame.dev/"
-site.template_dir = "theme\default"
+site.template_dir = "theme/default"
 site.post_src_dir = "posts"
 month_01 = "jan"
 month_02 = "feb"

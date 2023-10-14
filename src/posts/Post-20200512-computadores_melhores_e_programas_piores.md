@@ -18,13 +18,13 @@ Foi numa dessas reuniões via Google Meeting que a imagem de background da pági
 
 Considere o seguinte problema hipotético: um programa que acenda/apague uma lâmpada atravéz de um botão. Um programador da década de 60 ou 70 provavelmente escreveria algo assim:
 
-      typedef struct LampStruct
+      typedef struct
       {
         ...
           bool isOn;
       } Lamp;
       
-      lamp_toggle_state(Lamp* lamp)
+      void lamp_toggle_state(Lamp* lamp)
       {
         bool state = lamp->isOn;
         lamp->isOn = !state;
@@ -100,6 +100,6 @@ Meu entendimento é que – como indústria – precisamos voltar a experimentar
 
 ## Concluindo...
 
-Minha intenção com este post, de maneira nenhuma é me por num pedestal como o grande conhecedor das artes arcanas e élficas da programação gabaritado a apontar o que está certo ou errado na indústria como um todo. Mas você não precisa ser um chefe de cozinha nem ser versado em gastronomia para saber que tipo de comida te agrada ou quando um prato está mal feito.
 
 Do mesmo modo, não é preciso ser um gênio da computação para observar que algumas coisas estão certas e outras erradas, principalmente depois de mais de 20 anos escrevendo todo tipo de software, desde telecomunicação a games. Ao longo desse tempo, para mim é nitidamente visível a degradação tanto da qualidade geral dos softwares quanto da cultura da programação em si.
+Minha intenção com este post, de maneira nenhuma é me por num pedestal como o grande conhecedor das artes arcanas e élficas da programação gabaritado a apontar o que está certo ou errado na indústria como um todo. Mas você não precisa ser um chefe de cozinha nem ser versado em gastronomia para perceber que um prato tem um sabor etranho, uma aparncia questionável ou algo sugere que foi feito sem muito cuidado ou atenção.

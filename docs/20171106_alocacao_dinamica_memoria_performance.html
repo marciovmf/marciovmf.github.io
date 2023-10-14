@@ -1,25 +1,25 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" href="assets/default.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-	<title>[HANDMADE GAMEDEV] - Alocação dinâmica de memóra e performance</title>
-</head>
-
-  <body>
-    <div class="content">
-      <main>
-      <header>
-  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
-  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
-</div>
-</header>
-
-      <h2>Alocação dinâmica de memóra e performance
-        <time datetime="2017-11-06:00:00+02:00">2017-oct-06</time>
-      </h2>
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="assets/default.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+	<title>[HANDMADE GAMEDEV] - Alocação dinâmica de memóra e performance</title>
+</head>
+
+  <body>
+    <div class="content">
+      <main>
+      <header>
+  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
+  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+</div>
+</header>
+
+      <h2>Alocação dinâmica de memóra e performance
+        <time datetime="2017-11-06:00:00+02:00">2017-oct-06</time>
+      </h2>
       <article><p>33.333 milissegundos. Este é o tempo que uma engine de jogos tem para fazer todo o processamento necessário durante um frame se quiser manter uma taxa de 30 frames por segundo.</p><p>Quando se tem um budget tão restrito de tempo, deve-se evitar incorrer em dois tipos de situação:  realizar operações potencialmente lentas e realizar operações com tempo de execução variável/desconhecido. Alocação dinâmica de memória é exatamente a combinação destas duas situações. Neste post vou falar sobre como alocação dinâmica de memória pode comprometer o desempenho de um jogo e como estou abordando o problema na minha <a href="https://github.com/marciovmf/ldare">engine</a>.</p><p>Independente da linguagem a coisa funciona mais ou menos da mesma forma. Tudo começa com uma chamada aparentemente inocente como esta:</p><pre><code>RenderCommand *command = new
 RenderCommand();
 </code></pre><p>O compilador precisa separar esta chamada em 2 operações diferentes; uma para alocar memória e outra para inicializar a memória alocada, chamando o construtor da classe.</p><pre><code>RenderCommand *command = _new (sizeof(RenderCommand));
@@ -211,15 +211,15 @@ namespace ldare
     heap->freeMemList = allocationHeader;
   }
 } //namespace ldare
-</code></pre><h2>Nada de paranóia</h2><p>O objetivo aqui não é de maneira nenhuma estabelecer um dogma ou alguma paranóia irracional quanto a alocação dinâmica de memória, mas demonstrar o custo real e o impacto do seu uso inadvertido.<br>Relembrando a frase célebre de <a href="https://pt.wikipedia.org/wiki/Charles<em>Antony</em>Richard<em>Hoare">Tony Hoare</a>, popularizada por <a href="https://pt.wikipedia.org/wiki/Donald</em>Knuth): “Otimização prematura é a raiz de todo mal”. O que neste caso significa: se precisar alocar memória em 1 frame e constatar (de preferência com um profiller">Donald Knuth</a> que não há impacto, seja feliz e poupe seu tempo com um belo <strong>new</strong> . Recorra a soluções mais complicadas <strong>se</strong> e <strong>quando</strong> for necessário. Como no core loop de uma game engine ;D.<br>Happy <strong>#GameDev</strong>‘ing</p></article>
-      </main>
-    </div>
+</code></pre><h2>Nada de paranóia</h2><p>O objetivo aqui não é de maneira nenhuma estabelecer um dogma ou alguma paranóia irracional quanto a alocação dinâmica de memória, mas demonstrar o custo real e o impacto do seu uso inadvertido.<br>Relembrando a frase célebre de <a href="https://pt.wikipedia.org/wiki/Charles<em>Antony</em>Richard<em>Hoare">Tony Hoare</a>, popularizada por <a href="https://pt.wikipedia.org/wiki/Donald</em>Knuth): “Otimização prematura é a raiz de todo mal”. O que neste caso significa: se precisar alocar memória em 1 frame e constatar (de preferência com um profiller">Donald Knuth</a> que não há impacto, seja feliz e poupe seu tempo com um belo <strong>new</strong> . Recorra a soluções mais complicadas <strong>se</strong> e <strong>quando</strong> for necessário. Como no core loop de uma game engine ;D.<br>Happy <strong>#GameDev</strong>‘ing</p></article>
+      </main>
+    </div>
     <footer>
-  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
  </div>
   <div> © 2023 Márcio Freitas </div>
   <div>Generated with <a href="http://github.com/marciovmf/static">static</a>. </div>
 </footer>
-
-  </body>
-</html>
+
+  </body>
+</html>

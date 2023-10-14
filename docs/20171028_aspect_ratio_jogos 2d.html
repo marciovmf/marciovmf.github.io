@@ -1,25 +1,25 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" href="assets/default.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-	<title>[HANDMADE GAMEDEV] - Aspect Ration e Jogos 2D</title>
-</head>
-
-  <body>
-    <div class="content">
-      <main>
-      <header>
-  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
-  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
-</div>
-</header>
-
-      <h2>Aspect Ration e Jogos 2D
-        <time datetime="2017-10-28:00:00+02:00">2017-aug-28</time>
-      </h2>
+<!DOCTYPE HTML>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="assets/default.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
+	<title>[HANDMADE GAMEDEV] - Aspect Ration e Jogos 2D</title>
+</head>
+
+  <body>
+    <div class="content">
+      <main>
+      <header>
+  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
+  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+</div>
+</header>
+
+      <h2>Aspect Ration e Jogos 2D
+        <time datetime="2017-10-28:00:00+02:00">2017-aug-28</time>
+      </h2>
       <article><p>Em jogos 2D onde usualmente se emprega uma <a href="https://en.wikipedia.org/wiki/Orthographic<em>projection">projeção ortográfica</a>, o tamanho e proporção dos elementos da cena está intimamente ligado ao aspect ratio. <a href="https://en.wikipedia.org/wiki/Aspect</em>ratio_(image)">Aspect ratio</a> é a razão entre a largura e altura da resolução em que se está renderizando. Não considerar esta razão pode resultar em deformações na imagem, o que raramente é o que se deseja na maioria dos jogos.</p><p><img src="assets/images/ratio_wrong.gif" alt="aspect ration deformado"></p><p>Existem, entretanto, situações onde não é possível garantir que o <a href="https://en.wikipedia.org/wiki/Viewport">viewport</a> tenha um aspect ratio correto. Seja por que a janela foi redimensionada ou simplesmente por que a resolução que queremos não é suportada.</p><p>Na minha engine considerei algumas alternativas para garantir que os jogos fossem sempre renderizados corretamente. Cada uma delas com seus prós e contras.</p><h2>Alternativa 1: Restringir o redimensionamento da janela</h2><p>Alguns jogos interceptam o redimensionamento da janela, e impedem que ela seja alterada para uma resolução que desrespeite o aspect ratio, fazendo com que a janela incremente automaticamente a largura ou altura enquanto é redimensionada.</p><h3>Prós:</h3><p>Certeza do viewport com aspect ratio correto.</p><h3>Contras:</h3><p>Isso acaba restringindo algumas funcionalidades do SO como <a href="https://www.addictivetips.com/windows-tips/how-to-snap-windows-using-keyboard-shortcuts-in-windows-10/">snapping</a> de janelas.<br>Seria difícil garantir isso em dispositivos móveis. Sem falar que depois do Nougat o <a href="https://www.greenbot.com/article/3105486/android/how-to-use-split-screen-mode-in-android-nougat.html">splitscreen</a> tornou essa abordagem ainda menos viável.</p><h2>Alternativa 2: Alterar a resolução do computador</h2><h3>Prós:</h3><p>Certeza do viewport com aspect ratio correto.<br>É possível escrever o jogo para uma única resolução</p><h3>Contras:</h3><p>Essa opção me pareceu invasiva e não garante que o computador/monitor suporte a resolução ou mesmo o aspect ratio que precisamos.</p><p>Se não for possível alterar a resolução (talvez por não ser suportada) o jogo não roda ou roda deformado.</p><p>O jogo fica responsável por restaurar a resolução quando for fechado. E o jogo travar ou quebrar ?</p><p>Novamente, longe do ideal para jogos mobile.</p><h2>Alternativa 3: Barras verticais ou horizontais</h2><p>sta foi a opção que decidi implementar, e consiste calcular um viewport com aspecto correto com base no espaço disponível.</p><p><img src="assets/images/ratio_correct.gif" alt="Aspect ratio com barras dinâmicas"></p><h3>Prós:</h3><p>Certeza do viewport com aspect ratio correto.<br>É possível escrever o jogo para uma única resolução (com alguma engenhosidade)<br>Funciona com mobile.<br>As barras só aparecem apenas quando não temos janela/tela com proporções corretas.</p><h3>Contras:</h3><p>Eu sei, barras verticais ou horizontais não são necessariamente a coisa mais bonita de ser ver ao redor do seu jogo.</p><p>Implementação<br>O viewport é calculado sempre que as dimensões da tela mudam, seja redimensionando a janela no PC ou rotacionando o celular.</p><pre><code>void setViewportAspectRatio(uint32 windowWidth, uint32 windowHeight, uint32 virtualWidth, uint32 virtualHeight)
 {
   float targetAspectRatio = virtualWidth / (float) virtualHeight;
@@ -60,15 +60,15 @@ void main()
   gl_Position = ldare.projectionMatrix * ldare.baseModelMatrix * vec4(vPos.xy, 1.0, 1.0);
   texCoord = vTexCoord;
 }
-</code></pre><h2>Conclusão</h2><p>O que particularmente me agrada nesta solução, além da simplicidade, é o fato de permitir assumir uma resolução fixa para o jogo independente do tamanho do viewport. Isso torna a coisas mais simples ao implementar jogos 2D. Principalmente tile based games que assumem tiles simétricos como na imagem acima.</p></article>
-      </main>
-    </div>
+</code></pre><h2>Conclusão</h2><p>O que particularmente me agrada nesta solução, além da simplicidade, é o fato de permitir assumir uma resolução fixa para o jogo independente do tamanho do viewport. Isso torna a coisas mais simples ao implementar jogos 2D. Principalmente tile based games que assumem tiles simétricos como na imagem acima.</p></article>
+      </main>
+    </div>
     <footer>
-  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
+  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
  </div>
   <div> © 2023 Márcio Freitas </div>
   <div>Generated with <a href="http://github.com/marciovmf/static">static</a>. </div>
 </footer>
-
-  </body>
-</html>
+
+  </body>
+</html>
