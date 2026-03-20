@@ -1,61 +1,88 @@
-<!DOCTYPE html>
-<!-- Template by https://www.html.am/templates/downloads/view-source.cfm?template=layout-templates/2-column-left-menu-header-footer.cfm -->
-<html>
-  <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel="stylesheet" href="assets/default.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/0.0.1/prism.min.js"></script>
-	<title>[HANDMADE GAMEDEV] - index</title>
-</head>
-
-  <header>
-  <div> <h1>[HANDMADE GAMEDEV]</h1></div>
-  <div class="header_links"><a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
-</div>
-</header>
-
-  <body>		
-    <div class="content">
-      
-      <div class="left_panel">
-        <h2>Posts</h2>
-        <nav>
-          <ul>
-            
-            <li><a href="20200512_computadores_melhores_e_programas_piores.html">Computadores melhores e Programas piores<time
-                   datetime="2020-05-12:00:00+02:00">2020-mar-12</time></a></li>
-            
-            <li><a href="20180108_input_de_joystick_com_xinput.html">Input de joystick com XInput<time
-                   datetime="2018-01-08:00:00+02:00">2018-jan-08</time></a></li>
-            
-            <li><a href="20171106_alocacao_dinamica_memoria_performance.html">Alocação dinâmica de memóra e performance<time
-                   datetime="2017-11-06:00:00+02:00">2017-oct-06</time></a></li>
-            
-            <li><a href="20171028_aspect_ratio_jogos 2d.html">Aspect Ration e Jogos 2D<time
-                   datetime="2017-10-28:00:00+02:00">2017-aug-28</time></a></li>
-            
-          </ul>
-        </nav>
-      </div>
-
-      <div class="right_panel">
-        <main>
-          <h2>Why “handmade”?</h2>
-          <p>The title is inspired by the <a href="https://handmade.network/manifesto">handmade manifesto</a> that questions why software is irreparably becoming bloated and slow even after years of hardware speed increase.
-          </p>
-          <blockquote><p>… Why does it take your operating system 10 seconds, 30 seconds, a minute to boot up? Why does your word processor freeze when you save a document on the cloud? Why does your web browser take 3, 4, 10 seconds to load a web page? Why does your phone struggle to keep more than a few apps open at a time? And why does each update somehow make the problem worse? </p> </blockquote>
-          <p>It means that software should be writtern by hand and crafted minding the problem it's supposed to solve making the best possible use of the resources available. Writting software by hand is minding the underlying hardware, reasoning about the best way to lay our data on memory and the most efficient way to access it. It is the urge to learn how to build good software that <strong>works with the computer, instead of against it.</strong></p>
-        </main>
-      </div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMAD GAMEDEV - Home</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMAD GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <main class="section">
+        <section class="copy">
+<blockquote>Hardware keeps getting faster. Software doesn’t.
+<br>
+<br>Boot times grow. Apps stall. Pages take seconds to load. Systems become heavier with every update.
+<br>This isn’t just a performance issue—it’s a loss of understanding. As we rely more on layers of abstractions, we lose sight of how programs actually work, and with that, the ability to control their behavior.
+<br>
+<br>“Handmade” is my approach to building software. It’s about building with intent—understanding the hardware, shaping data deliberately, and making conscious trade-offs. It’s about writing systems you can fully reason about, instead of ones you merely assemble.</blockquote>
+        </section>
+        <section class="posts-section">
+          <h2 class="section-title">Posts</h2>
+          <div class="post-grid">
+             <article class="post-item">
+               <a class="post-title" href="doxter_no_nonsense_c_documentation_generator.html">Doxter - No nonsense C documentation generator</a>
+               <span class="post-date"><time datetime="2026-2-2">#</time></span>
+             </article>
+             <article class="post-item">
+               <a class="post-title" href="minima_a_tiny_command_language_you_can_embedd_anywhere.html">Minima - A tiny language you can embed anywhere</a>
+               <span class="post-date"><time datetime="2025-12-19">#</time></span>
+             </article>
+             <article class="post-item">
+               <a class="post-title" href="On_the_Degradation_of_Programming_Culture.html">On the Degradation of Programming Culture</a>
+               <span class="post-date"><time datetime="2020-3-12">#</time></span>
+             </article>
+             <article class="post-item">
+               <a class="post-title" href="slab_a_minima_static_site_generator.html">Slab - A minimal and powerful static site generator</a>
+               <span class="post-date"><time datetime="2026-2-25">#</time></span>
+             </article>
+             <article class="post-item">
+               <a class="post-title" href="stdx_my_standard_c_library.html">STDX - My Standard C Library</a>
+               <span class="post-date"><time datetime="2026-3-11">#</time></span>
+             </article>
+          </div>
+        </section>
+      </main>
     </div>
-
-    <footer>
-  <div> <a href="index.html">HOME</a> | <a href="about.html">ABOUT</a> | <a href="http://github.com/marciovmf/static">GITHUB</a> | <a href="http://twitter.com/marciovmf">TWITTER</a> | <a href="https://discord.gg/eebHVk8a">DISCORD</a>
- </div>
-  <div> © 2023 Márcio Freitas </div>
-  <div>Generated with <a href="http://github.com/marciovmf/static">static</a>. </div>
-</footer>
-
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2023 Márcio Freitas</div>
+  <div class="footer-meta">Generated with static.</div>
+</footer>
   </body>
 </html>

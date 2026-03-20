@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMAD GAMEDEV - Doxter - No nonsense C documentation generator</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMAD GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <article class="post">
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+        <header class="post-header">
+          <h1 class="post-title">Doxter - No nonsense C documentation generator</h1>
+          <p class="post-meta"><time datetime="2026-2-2">??</time></p>
+          <p class="post-meta"></p>
+<p>I built <b>doxter</b> as a demo application for the STDX library.</p>
+<p>The original goal wasn’t to create a documentation tool. The goal was to exercise the library in a real program and see where it breaks, where it feels good, and where it doesn’t. That meant file handling, string processing, command line parsing, HTML generation, theming—everything that usually exposes weak spots.</p>
+<p>Still, I didn’t want a throwaway demo. If I was going to write it, it had to be something I could actually use.</p>
+<p>So doxter ended up as a small documentation generator for C projects. It scans <code>.c</code> and <code>.h</code> files, extracts documentation comments, and produces static HTML. No runtime, no dependencies, no layers.</p>
+<p>You can find the project here:<br/>
+<a href="https://github.com/marciovmf/stdx/tree/main/demo/doxter">https://github.com/marciovmf/stdx/tree/main/demo/doxter</a></p>
+<p>And here is a real example of documentation generated with it (STDX itself):<br/>
+<a href="https://handmadegame.dev/stdx/">https://handmadegame.dev/stdx/</a></p>
+<hr/>
+<h1 id="what-it-does">What it does</h1>
+<p>At its core, doxter is extremely simple. It reads source files, looks for documentation comments, associates them with the symbols that follow, and emits static HTML pages. There’s no attempt to deeply understand the code. It just follows a few predictable rules and stays out of the way.</p>
+<hr/>
+<h1 id="command-line-usage">Command line usage</h1>
+<pre><code>Usage:
+
+  doxter [options] input_files
+
+Options
+
+  -f &lt;path-to-doxter.init&gt;         = Path to doxter.ini.
+  -d &lt;path-to-output-dir&gt;          = Specify output directory for generated files.
+  -p &lt;project-name&gt;                = Project name.
+  --skip-static                    = Skip static functions.
+  --skip-undocumented              = Skip undocumented symbols.
+  --skip-empty-defines             = Skip empty defines.
+</code></pre>
+<p>The interface is intentionally minimal. You point it at a configuration file, choose an output directory, pass your input files, and it generates documentation.</p>
+<hr/>
+<h1 id="documentation-comments">Documentation comments</h1>
+<p>doxter relies on a very straightforward convention. Any comment block written in this format</p>
+<pre><code>/**
+ * Documentation text
+ */
+</code></pre>
+<p>is attached to the symbol that immediately follows it. The content of that block becomes the documentation in the generated HTML. There’s no custom language or complex parsing involved.</p>
+<p>For functions, the comment block supports a few tags. The brief description is optional; if you don’t explicitly mark it, whatever comes right after <code>/**</code> is treated as the brief. Parameters can be documented with <code>@param &lt;name&gt;</code>, optionally followed by a description, and return values can be described with <code>@return</code>.</p>
+<p>There is one special case. If a comment block starts at line 1, column 1 and is followed by an empty line, it is treated as a file-level comment. That content is placed at the top of the generated documentation page and works well as an overview.</p>
+<hr/>
+<h1 id="configuration">Configuration</h1>
+<p>doxter is driven by a single configuration file in INI format. This file defines project metadata, filtering behavior, markdown support, and the visual theme.</p>
+<p>Here is a real example taken from the STDX project:</p>
+<pre><code>[project]
+name = stdx
+url = http://github.com/marciovmf/stdx
+brief = "STDX is a minimalist, modular C99 utility library inspired by the STB style.
+It provides a set of dependency-free, single-header components that extend common programming functionality in C"
+
+skip_static_functions = 1
+skip_undocumented = 0
+skip_empty_defines = 1
+markdown_gobal_comments = 1
+markdown_index_page = 1
+
+[theme]
+color_page_background = ffffff
+color_sidebar_background = f8f9fb
+color_main_text = 1b1b1b
+color_secondary_text = 5f6368
+color_highlight = 0067b8
+color_light_borders = e1e4e8
+color_code_blocks = f6f8fa
+color_code_block_border = d0d7de
+border_radius = 10
+
+color_tok_pp  = 6f42c1
+color_tok_kw  = 005cc5
+color_tok_id  = 24292f
+color_tok_num = b31d28
+color_tok_str = 032f62
+color_tok_crt = 032f62
+color_tok_pun = 6a737d
+color_tok_doc = 22863a
+
+font_code    = "Cascadia Mono"
+font_ui      = "Helvetica", "Verdana", "Calibri"
+font_heading = "Helvetica"
+font_symbol  = "Segoe UI"
+</code></pre>
+<p>The configuration keeps everything explicit. There is no hidden behavior, and changing the look or filtering rules is just a matter of editing values.</p>
+<hr/>
+<h1 id="typical-workflow">Typical workflow</h1>
+<p>Using doxter follows a predictable flow. You start by creating a <code>doxter.ini</code> file. Then you add documentation comments directly in your <code>.c</code> and <code>.h</code> files. Once that is done, you run the tool with your configuration and input files:</p>
+<pre><code>doxter -f doxter.ini -d docs file1.h file2.c file3.h 
+</code></pre>
+<p>After it finishes, you open the generated HTML in a browser. That’s the entire loop.</p>
+<hr/>
+<h1 id="why-it-exists">Why it exists</h1>
+<p>Most documentation tools for C try to do too much or impose too much structure. doxter deliberately does less. It doesn’t try to interpret your code beyond what is necessary, and it doesn’t force you into a specific way of writing.</p>
+<p>It exists because I wanted a real program to validate STDX and because I wanted a documentation tool that matches how I already write C.</p>
+<hr/>
+<h1 id="final-thoughts">Final thoughts</h1>
+<p>doxter is intentionally small. It reads files, extracts comments, and renders HTML. That’s all it does.</p>
+<p>If you already document your code like this:</p>
+<pre><code>/**
+ * Adds two vectors.
+ */
+vec3 vec3_add(vec3 a, vec3 b);
+</code></pre>
+<p>then you already have documentation. doxter just turns it into something readable.</p>
+        </header>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2023 Márcio Freitas</div>
+  <div class="footer-meta">Generated with static.</div>
+</footer>
+  </body>
+</html>

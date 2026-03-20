@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <% template (format "${template_dir}\\_include\\head.html") %>
+  <body>
+    <div class="page">
+    <% template (format "${template_dir}\\_include\\top.html") %>
+      <article class="post">
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+        <header class="post-header">
+          <h1 class="post-title"><%= $post_title %></h1>
+          <p class="post-meta"><time datetime="<%= (format "${post_year}-${post_month}-${post_day}") %>">??</time></p>
+          <p class="post-meta"><%= $post_author %></p>
+          <%= $post_body %>
+        </header>
+      </article>
+    </div>
+    <% template (format "${template_dir}\\_include\\footer.html") %>
+  </body>
+</html>

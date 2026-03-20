@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+  <% template (format "${template_dir}\\_include\\head.html") %>
+  <body>
+    <div class="page">
+    <% template (format "${template_dir}\\_include\\top.html") %>
+      <%= $post_body %>
+      </article>
+    </div>
+    <% template (format "${template_dir}\\_include\\footer.html") %>
+  </body>
+</html>

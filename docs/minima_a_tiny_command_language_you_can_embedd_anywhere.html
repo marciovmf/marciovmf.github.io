@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMAD GAMEDEV - Minima - A tiny language you can embed anywhere</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMAD GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <article class="post">
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+        <header class="post-header">
+          <h1 class="post-title">Minima - A tiny language you can embed anywhere</h1>
+          <p class="post-meta"><time datetime="2025-12-19">??</time></p>
+          <p class="post-meta"></p>
+<p>I didn’t set out to build a programming language.
+Minima started as a testbed—a way to exercise
+<a href="stdx_my_standard_c_library.html">STDX</a> in something more realistic than isolated unit tests. I needed something that would stress parsing, memory management, data structures, and execution flow… all at once. So instead of writing more tests, I wrote a language.</p>
+<p>And then it became useful. That raised a more interesting question.</p>
+<hr/>
+<h2 id="why-minima-exists">Why Minima exists</h2>
+<p>At first, Minima was just a demo interpreter. But it quickly became clear that it solves a real problem:</p>
+<blockquote>How do you embed simple, extensible behavior into a C project without dragging in a full general-purpose scripting runtime?</blockquote>
+<p>Most options fall into two extremes: either too heavy (Lua, Python, etc.) or too limited (ad-hoc config formats, JSON, etc.).
+Minima sits in the middle: it is a scripting language, but one designed specifically for embedding—small, fully controllable from C, with no hidden semantics and a very simple runtime. It’s intended to be used as a general-purpose embedded DSL.</p>
+<p>To understand why that works, you need to look at it was designed <b>not</b> to be.</p>
+<hr/>
+<h2 id="design-influences-and-rejections">Design influences (and rejections)</h2>
+<p>Minima didn’t come from a vacuum. It’s shaped as much by what it avoids as by what it embraces.</p>
+<p>Lua is the obvious starting point. It’s one of the most popular embedded languages, and for good reason: it’s clean, well-designed, and integrates well with C. However, it’s still a full language runtime. Tables, metatables, coroutines, garbage collection… even when you only need a small DSL, you inherit a lot of machinery.</p>
+<p>Minima deliberately avoids that weight:</p>
+<ul><li>no object model  </li><li>no VM complexity beyond what’s needed  </li><li>no features you didn’t ask for  </li></ul><p>On the other end of the spectrum is Tcl.</p>
+<p>Tcl showed that “everything is a command” is a powerful idea. It enables a uniform and highly extensible model where the language itself is just a thin layer over command dispatch.</p>
+<p>However, in practice, Tcl becomes highly ambiguous. It is full of subtle, context-dependent rules where behavior changes depending on how expressions are interpreted. You’re constantly reasoning about whether something is taken literally, treated as a string, or evaluated in a different context—and whether escape sequences will be expanded or not.</p>
+<p>The result is a model that is powerful, but difficult to predict.</p>
+<p>Minima takes a different approach:</p>
+<blockquote>Keep the core idea—everything is a command—but remove the ambiguity.</blockquote>
+<p>This leads to a simpler and more explicit model:</p>
+<ul><li>no implicit substitutions  </li><li>no hidden evaluation phases  </li><li>commands decide explicitly what to evaluate  </li></ul><hr/>
+<h2 id="the-core-idea-everything-is-a-command">The core idea: everything is a command</h2>
+<p>Minima has one fundamental rule: <b>everything is a command</b>. There are no keywords. No special syntax. No hidden constructs. No <code>if</code>. No <code>while</code>. No <code>for</code>. And yet… you can write all of those. Because they’re just commands.</p>
+<pre><code>if (expr $n &gt; 10) {
+  print "large\n"
+} else {
+  print "small\n"
+}
+</code></pre>
+<p>That looks like a language construct—but it isn’t. It’s just a command called
+<code>if</code>. This leads to one key property: <b>The language is completely extensible.</b></p>
+<p>You don’t extend Minima by modifying the parser.  You extend it by registering new commands. Once you accept that, the rest of the design follows naturally.</p>
+<hr/>
+<h2 id="minimal-syntax-by-design">Minimal syntax, by design</h2>
+<p>The entire syntax of the language fits in a few rules:</p>
+<ul><li>A program is a sequence of commands</li><li>Commands are separated by newline or <code>;</code></li><li>First token = command name</li><li>Remaining tokens = arguments</li><li><code>{ ... }</code> = block</li><li><code>( ... )</code> = subcommand (exactly one command)</li><li><code>#</code> = comment</li></ul><p>That’s it.</p>
+<p>No precedence rules baked into the language.<br/>
+No expression grammar (those live in commands like <code>expr</code>).<br/>
+No special forms.</p>
+<p>This simplicity is not a limitation—it’s what makes the model predictable.</p>
+<hr/>
+<h2 id="latent-behavior-evaluation-is-explicit">Latent behavior: evaluation is explicit</h2>
+<p>The most important (and subtle) design choice is this:</p>
+<p>Arguments are <b>not</b> automatically evaluated.</p>
+<p>Commands receive <b>AST nodes</b>, not values. Each command decides <b>if</b>, <b>when</b>, and <b>how</b> to evaluate its arguments.</p>
+<p>This gives you surgical control over behavior. Different commands decide how evaluation happens:</p>
+<ul><li><code>set</code> evaluates the value, but not the variable name  </li><li><code>if</code> evaluates the condition, then may execute a block  </li><li><code>list</code> dispatches subcommands dynamically  </li></ul><p>This is what makes Minima feel simple on the surface but powerful and extensible underneath.</p>
+<p>It also makes implementing new commands trivial—because you’re not fighting the runtime.</p>
+<hr/>
+<h2 id="a-quick-taste">A quick taste</h2>
+<pre><code>set name "Minima"
+set n (expr 40 + 2)
+print (format "name=${name}, n=${n}\n")
+
+</code></pre>
+<p>Lists:</p>
+<pre><code>set xs (list create a b c)
+list push $xs d
+
+foreach item $xs {
+  print (format "item=${item}\n")
+}
+</code></pre>
+<p>Dynamic evaluation:</p>
+<pre><code>eval "print \"hello from eval\n\""
+
+</code></pre>
+<p>Include files:</p>
+<pre><code>include "script.mi"
+</code></pre>
+<p>All of these are just commands.</p>
+<p>At this point, the important question becomes: how does this integrate into a real system?</p>
+<hr/>
+<h2 id="embedding-the-real-goal">Embedding: the real goal</h2>
+<p>Minima is not meant to be a standalone language. It’s meant to be embedded.</p>
+<p>The embedding model is straightforward:</p>
+<ol><li> Create a context  </li><li> Register built-in commands  </li><li> Register your own commands  </li><li> Parse + execute  </li></ol><p>Check the project's README for more details.</p>
+<h4 id="1-initialize-runtime-state">1) Initialize runtime state</h4>
+<pre><code>XArena *arena = x_arena_create(8 * 1024);
+MiContext ctx;
+
+if (!arena) {  /* host error handling */ }
+
+if (!mi_context_init(&amp;ctx, arena, stdout, stderr)) {
+  /* host error handling */
+}
+
+if (!mi_register_builtins(&amp;ctx)) {
+  /* host error handling */
+}
+
+mi_register_command(&amp;ctx, "mycmd", cmd_my_cmd);
+
+MiParseResult p = mi_parse(arena, source);
+if (!p.ok) {
+  fprintf(stderr, "%d:%d: %s\n",
+      p.error_line, p.error_column,
+      p.error_message ? p.error_message : "parse error");
+}
+
+MiExecResult r = mi_exec_block(&amp;ctx, p.root, false);
+if (r.signal == MI_SIGNAL_ERROR) {
+  fprintf(stderr, "%d:%d: %s\n",
+      ctx.error_line, ctx.error_column,
+      ctx.error_message ? ctx.error_message : "runtime error");
+}
+
+x_arena_destroy(arena);
+
+</code></pre>
+<hr/>
+<h2 id="why-this-works-well-in-c">Why this works well in C</h2>
+<p>Writing something like this in C is usually painful. Minima was practical to implement because STDX provides the missing pieces that C doesn’t:</p>
+<ul><li>Arena allocator for fast, simple lifetime management  </li><li>Dynamic arrays for AST and runtime structures  </li><li>Strings and slices for no constant copying  </li><li>Filesystem + IO helpers for <code>include</code>, etc.  </li></ul><p>Without that, I’d spend a lot of time fighting memory and data structures. With STDX, the implementation was straightforward—and it even exposed bugs and improvement points in STDX itself. That’s the real experiment here:</p>
+<blockquote>Can you build a small, expressive language in C without losing your sanity?</blockquote>
+<p>Turns out: yes, if your foundation is right.</p>
+<hr/>
+<h2 id="where-this-is-going">Where this is going</h2>
+<p>Minima is already useful as:</p>
+<ul><li>A scripting layer for tools  </li><li>A configuration language with behavior  </li><li>A DSL for build systems (Minima + Weld)  </li><li>A templating backend (via <code>eval</code> + <code>include</code>)  </li><li>A foundation for tools like SLAB  </li></ul><p>And it’s still tiny. No JIT.  No optimizer.  No complex runtime.  Just commands.</p>
+<hr/>
+<h2 id="final-thought">Final thought</h2>
+<p>Minima is not trying to compete with Lua or Python. It’s trying to answer a simpler question:</p>
+<blockquote>What is the smallest <em>useful</em> language you can embed in a C program?</blockquote>
+<p>Right now, the answer looks like this:</p>
+<ul><li>One syntax rule: commands  </li><li>One extension mechanism: register functions  </li><li>One evaluation model: explicit  </li></ul><p>Everything else is optional.</p>
+        </header>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2023 Márcio Freitas</div>
+  <div class="footer-meta">Generated with static.</div>
+</footer>
+  </body>
+</html>

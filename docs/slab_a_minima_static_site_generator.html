@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMAD GAMEDEV - Slab - A minimal and powerful static site generator</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMAD GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <article class="post">
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+        <header class="post-header">
+          <h1 class="post-title">Slab - A minimal and powerful static site generator</h1>
+          <p class="post-meta"><time datetime="2026-2-25">??</time></p>
+          <p class="post-meta"></p>
+<p>Years ago I used to have a WordPress website. It’s powerful, but also bloated, slow, and prone to breaking if you let it update itself. So I decided to move my blog to a static site.</p>
+<p>While looking for static site generators, I ran into the same problem again. Almost all of them were also bloated, requiring me to install a bunch of tools just to replace a few strings in HTML files.</p>
+<p>So I did what any sane programmer would do: I spent a weekend writing something that actually fit my needs.</p>
+<p>The result was <a href="https://github.com/marciovmf/static">my first static site generator</a>: a small, self-contained program—a single command-line executable with no external dependencies.</p>
+<p>At the time, that generator was more than enough. Fast-forward to when I had just finished implementing Minima. I wanted to see what it actually felt like to use it in a real project. A static site generator turned out to be the perfect test.</p>
+<p>That’s when I started working on <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</p>
+<p>Slab is a tiny static-site generator built on top of <a href="stdx_my_standard_c_library">STDX</a> and powered by <a href="minima_a_tiny_command_language_you_can_embedd_anywhere.html">Minima</a>. The goal was to preserve what worked in the original project while exploring how STDX could simplify the implementation and how Minima could make it more flexible.</p>
+<p>So Slab became that experiment.</p>
+<hr/>
+<h2 id="why-slab-exists">Why Slab exists</h2>
+<p>There are plenty of static site generators out there. That’s not the problem.</p>
+<p>The problem is that most of them are too bloated, require installing full programming ecosystems, or are packaged inconveniently.</p>
+<p>Slab explores a different space:</p>
+<blockquote>What if a static site generator was just a thin layer over a small, explicit scripting language?</blockquote>
+<p>Instead of building a large system with many special cases, Slab keeps the core simple and delegates behavior to Minima.</p>
+<hr/>
+<h2 id="the-core-idea-templates-are-programs">The core idea: templates are programs</h2>
+<p>In Slab, templates are not just templates. They are programs.</p>
+<p>HTML files are treated as a mix of static markup and embedded Minima code:</p>
+<pre><code>&lt;%= $post_title %&gt;
+&lt;% foreach p $all_pages { print (page title $p) } %&gt;
+</code></pre>
+<p>There are only two constructs:</p>
+<ul><li><code>&lt;% ... %&gt;</code> → execute code  </li><li><code>&lt;%= ... %&gt;</code> → evaluate and print result  </li></ul><p>Everything else is just Minima. In Minima, everything is a command—templates are just another place where commands run.</p>
+<hr/>
+<h2 id="how-slab-works">How Slab works</h2>
+<p>At a high level, Slab is a two-pass system: first it collects information, then it executes templates.</p>
+<p>Slab scans two directories:</p>
+<ul><li>content (your pages)</li><li>templates (your layouts and includes)</li></ul><p>It walks the directory tree, ignoring paths that start with <code>_</code>, and classifies files:</p>
+<ul><li><code>.md</code>, <code>.html</code>, <code>.htm</code> → processable pages  </li><li>everything else → static assets (copied as-is)</li></ul><p>For each page, it looks for a frontmatter block:</p>
+<pre><code>---
+title: Hello
+template: post
+slug: posts/hello
+date: 2025-03-17
+category: post
+---
+</code></pre>
+<p>If frontmatter exists, Slab builds a page object with metadata and output path. If not, the file is treated as a static asset.</p>
+<p>Once all pages are collected, Slab injects global structures into the Minima runtime, such as the list of all pages, the list of all categories, and metadata for the current page.</p>
+<p>Additionally, it registers only a couple of custom commands:</p>
+<ul><li><code>template PATH</code> → include and execute another template  </li><li><code>page PROPERTY PAGE_OBJ</code> → access page metadata  </li></ul><p>Everything else—loops, conditionals, string formatting—comes from Minima.</p>
+<hr/>
+<h3 id="render-pass">Render pass</h3>
+<p>For each page:</p>
+<ol><li> Read source content  </li><li> Convert Markdown to HTML (if needed)  </li><li> Load the selected layout  </li><li> Expand template tags into Minima code  </li><li> Execute that code  </li><li> Write the result to disk  </li></ol><p>Because templates are compiled into Minima and executed by the runtime templates are either flexible and simple.</p>
+<hr/>
+<h2 id="the-data-model">The data model</h2>
+<p>Before executing templates, Slab injects a set of global variables into the Minima runtime. These variables are then used by the script to generate the final page output.</p>
+<p>At the site level:</p>
+<ul><li><code>site_url</code></li><li><code>site_name</code></li><li><code>content_dir</code></li><li><code>template_dir</code></li><li><code>output_dir</code></li></ul><p>For the current page:</p>
+<ul><li><code>post_title</code></li><li><code>post_date</code></li><li><code>post_slug</code></li><li><code>post_body</code></li><li>and other derived fields</li></ul><p>Slab also provides a couple of collections:</p>
+<ul><li><code>all_pages</code></li><li><code>all_categories</code></li></ul><p>Page objects are opaque values and are accessed through a command:</p>
+<pre><code>(page title $p)
+(page url $p)
+(page category $p)
+</code></pre>
+<p>This keeps the language simple while still allowing structured data access.</p>
+<hr/>
+<h2 id="final-thought">Final thought</h2>
+<p>Slab started as an experiment. It turned out to be a very practical one.</p>
+<p>STDX and Minima removed most of the friction of building something like this in C. They provide the core pieces—memory management, data structures, parsing, and execution—so the implementation stays small and focused. At the same time, pushing behavior into Minima keeps the system flexible without making the core complex.</p>
+<p>Even as a demo, Slab proved to be powerful and robust enough to become my main site generator—the one used to generate this very blog.</p>
+<p>That’s a good place for an experiment to end up.</p>
+        </header>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2023 Márcio Freitas</div>
+  <div class="footer-meta">Generated with static.</div>
+</footer>
+  </body>
+</html>

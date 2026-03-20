@@ -1,0 +1,156 @@
+---
+title:    Slab - A minimal and powerful static site generator
+template: post
+tags:     programming C project
+date:     2026-02-25
+category: post
+slug:     slab_a_minima_static_site_generator
+---
+
+Years ago I used to have a WordPress website. It’s powerful, but also bloated, slow, and prone to breaking if you let it update itself. So I decided to move my blog to a static site.
+
+While looking for static site generators, I ran into the same problem again. Almost all of them were also bloated, requiring me to install a bunch of tools just to replace a few strings in HTML files.
+
+So I did what any sane programmer would do: I spent a weekend writing something that actually fit my needs.
+
+The result was [my first static site generator](https://github.com/marciovmf/static): a small, self-contained program—a single command-line executable with no external dependencies.
+
+At the time, that generator was more than enough. Fast-forward to when I had just finished implementing Minima. I wanted to see what it actually felt like to use it in a real project. A static site generator turned out to be the perfect test.
+
+That’s when I started working on [Slab](https://github.com/marciovmf/stdx/tree/main/demo/slab).
+
+Slab is a tiny static-site generator built on top of [STDX](stdx_my_standard_c_library) and powered by [Minima](minima_a_tiny_command_language_you_can_embedd_anywhere.html). The goal was to preserve what worked in the original project while exploring how STDX could simplify the implementation and how Minima could make it more flexible.
+
+So Slab became that experiment.
+
+---
+
+## Why Slab exists
+
+There are plenty of static site generators out there. That’s not the problem.
+
+The problem is that most of them are too bloated, require installing full programming ecosystems, or are packaged inconveniently.
+
+Slab explores a different space:
+
+> What if a static site generator was just a thin layer over a small, explicit scripting language?
+
+Instead of building a large system with many special cases, Slab keeps the core simple and delegates behavior to Minima.
+
+---
+
+## The core idea: templates are programs
+
+In Slab, templates are not just templates. They are programs.
+
+HTML files are treated as a mix of static markup and embedded Minima code:
+
+    <%= $post_title %>
+    <% foreach p $all_pages { print (page title $p) } %>
+
+There are only two constructs:
+
+- `<% ... %>` → execute code  
+- `<%= ... %>` → evaluate and print result  
+
+Everything else is just Minima. In Minima, everything is a command—templates are just another place where commands run.
+
+---
+
+## How Slab works
+
+At a high level, Slab is a two-pass system: first it collects information, then it executes templates.
+
+Slab scans two directories:
+
+- content (your pages)
+- templates (your layouts and includes)
+
+It walks the directory tree, ignoring paths that start with `_`, and classifies files:
+
+- `.md`, `.html`, `.htm` → processable pages  
+- everything else → static assets (copied as-is)
+
+For each page, it looks for a frontmatter block:
+
+```
+---
+title: Hello
+template: post
+slug: posts/hello
+date: 2025-03-17
+category: post
+---
+```
+    
+If frontmatter exists, Slab builds a page object with metadata and output path. If not, the file is treated as a static asset.
+
+Once all pages are collected, Slab injects global structures into the Minima runtime, such as the list of all pages, the list of all categories, and metadata for the current page.
+
+Additionally, it registers only a couple of custom commands:
+
+- `template PATH` → include and execute another template  
+- `page PROPERTY PAGE_OBJ` → access page metadata  
+
+Everything else—loops, conditionals, string formatting—comes from Minima.
+
+---
+
+### Render pass
+
+For each page:
+
+1. Read source content  
+2. Convert Markdown to HTML (if needed)  
+3. Load the selected layout  
+4. Expand template tags into Minima code  
+5. Execute that code  
+6. Write the result to disk  
+
+Because templates are compiled into Minima and executed by the runtime templates are either flexible and simple.
+
+---
+
+## The data model
+
+Before executing templates, Slab injects a set of global variables into the Minima runtime. These variables are then used by the script to generate the final page output.
+
+At the site level:
+
+- `site_url`
+- `site_name`
+- `content_dir`
+- `template_dir`
+- `output_dir`
+
+For the current page:
+
+- `post_title`
+- `post_date`
+- `post_slug`
+- `post_body`
+- and other derived fields
+
+Slab also provides a couple of collections:
+
+- `all_pages`
+- `all_categories`
+
+Page objects are opaque values and are accessed through a command:
+
+    (page title $p)
+    (page url $p)
+    (page category $p)
+
+This keeps the language simple while still allowing structured data access.
+---
+
+## Final thought
+
+Slab started as an experiment. It turned out to be a very practical one.
+
+STDX and Minima removed most of the friction of building something like this in C. They provide the core pieces—memory management, data structures, parsing, and execution—so the implementation stays small and focused. At the same time, pushing behavior into Minima keeps the system flexible without making the core complex.
+
+Even as a demo, Slab proved to be powerful and robust enough to become my main site generator—the one used to generate this very blog.
+
+That’s a good place for an experiment to end up.

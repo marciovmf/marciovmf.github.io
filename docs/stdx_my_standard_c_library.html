@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMAD GAMEDEV - STDX - My Standard C Library</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMAD GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <article class="post">
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+        <header class="post-header">
+          <h1 class="post-title">STDX - My Standard C Library</h1>
+          <p class="post-meta"><time datetime="2026-3-11">??</time></p>
+          <p class="post-meta"></p>
+<p>About two years ago I decided that I would use <b>C instead of C++ for my personal projects</b>. Life is too short to program C++ at work <em>and</em> in personal projects.</p>
+<p>Because of that decision I quickly found myself reimplementing the same basic functionality over and over again: arenas, hash tables, filesystem utilities, string helpers, and similar infrastructure.
+Eventually I decided to stop rewriting these pieces in every project and instead implement them once in a reusable way.
+At the same time I gathered other bits of common code I had written over the years — some of it originally written in C++, later rewritten in C.
+The result became <b>my own standard library</b> called <a href="https://github.com/marciovmf/stdx">STDX</a> .</p>
+<hr/>
+<h2 id="what-is-stdx">What is STDX</h2>
+<p>STDX is a collection of small utility libraries for C that provide implementations of common data structures and system helpers.
+Each module solves a specific problem and can be used independently.</p>
+<p>All modules are <b>single-header libraries</b>.<br/>
+The implementation is enabled by defining a macro in exactly one translation unit:</p>
+<pre><code>#define X_IMPL_ARRAY
+#include "stdx_array.h"
+</code></pre>
+<p>This allows the library to be dropped directly into a project without requiring a specific build system.</p>
+<hr/>
+<h2 id="design-philosophy">Design Philosophy</h2>
+<p>The STDX headers follow a very recognizable structure:</p>
+<ul><li>single-header libraries</li><li>C99</li><li>STB-style toggled implementation</li><li>explicit allocation hooks</li><li>minimal dependencies</li><li>straightforward, type-centric APIs</li></ul><p>There are no compiler tricks, no heavy metaprogramming, and very little hidden behavior.
+The goal is predictable cost and straightforward correctness. The code should be readable from top to bottom and understandable without surprises.</p>
+<hr/>
+<h2 id="feature-overview">Feature Overview</h2>
+<p>STDX ships as a set of modules inside src/, each focused, readable, and self-contained.</p>
+<h3 id="core">Core</h3>
+<ul><li><b>stdx_common</b><ul><li>Portability macros, compiler/OS detection, assertions, bit utilities, typedefs, and tagged result pointers.</li></ul></li><li><b>stdx_time</b><ul><li>Cross-platform timers, high-resolution time measurement, time arithmetic, and sleep helpers.</li></ul></li><li><b>stdx_cpuid</b><ul><li>Cross-platform CPU information and feature detection.</li></ul></li></ul><h3 id="memory-containers">Memory &amp; Containers</h3>
+<ul><li><b>stdx_arena</b><ul><li>Bump allocator with chunk growth, mark/rewind support, trimming, and zero-fill helpers.</li></ul></li></ul><ul><li><b>stdx_array</b><ul><li>Generic dynamic array with automatic growth and stack-like push/pop operations.</li></ul></li></ul><ul><li><b>stdx_hashtable</b><ul><li>Generic hash map with open addressing, tombstones, and user-provided callbacks.</li></ul></li></ul><h3 id="strings-text-utilities">Strings &amp; Text Utilities</h3>
+<ul><li><b>stdx_string</b><ul><li>UTF-8 utilities, slices, stack-allocated small strings, searching, trimming, conversions, and comparisons.</li></ul></li></ul><ul><li><b>stdx_strbuilder</b><ul><li>Fast dynamic string builders for UTF-8 and wide strings.</li></ul></li></ul><ul><li><b>stdx_ini</b><ul><li>Minimal INI parser with string interning and flat array storage.</li></ul></li></ul><h3 id="platform-system-helpers">Platform &amp; System Helpers</h3>
+<ul><li><b>stdx_filesystem</b><ul><li>Path utilities, directory walking, file operations, metadata queries, symlinks, and file watchers.</li></ul></li></ul><ul><li><b>stdx_network</b><ul><li>Unified socket API supporting TCP/UDP, IPv4/IPv6, polling, DNS, and multicast/broadcast.</li></ul></li></ul><ul><li><b>stdx_io</b><ul><li>Thin wrapper around FILE* for consistent I/O and helpers for reading and writing whole files.</li></ul></li></ul><ul><li><b>stdx_thread</b><ul><li>Portable threads, mutexes, condition variables, sleep/yield helpers, and a simple thread pool.</li></ul></li></ul><h3 id="diagnostics-tooling">Diagnostics &amp; Tooling</h3>
+<ul><li><b>stdx_log</b><ul><li>Structured, colorful logging with configurable outputs and log levels.</li></ul></li></ul><ul><li><b>stdx_test</b><ul><li>Small testing framework with timing, assertions, and crash reporting.</li></ul></li></ul><hr/>
+<h2 id="tools">Tools</h2>
+<p>In addition to the libraries, the project also includes a small set of command-line tools built on top of STDX.
+They are small utilities that solve specific problems and are implemented using the same principles as the library itself: simple code, minimal dependencies, and predictable behavior.</p>
+<p>Two examples are currently included in the repository.</p>
+<h3 id="bake">bake</h3>
+<p><a href="https://github.com/marciovmf/stdx/tree/main/demo/bake&gt;">bake</a> is a small utility that helps embed files into C source code.</p>
+<p>It reads an input file and generates C code that contains the file's contents as static data. This makes it possible to compile resources such as shaders, configuration files, or other assets directly into a program without relying on external files at runtime.
+<b>bake</b> is also used to generate <b>string intern tables</b>.</p>
+<p>String interning is a technique where identical strings are stored only once in memory and referenced through pointers or IDs. Instead of comparing strings character-by-character, the program can simply compare pointers or integer identifiers.</p>
+<p>For example, instead of repeatedly allocating and comparing strings like:</p>
+<pre><code> "open"
+ "close"
+ "open"
+ "close"
+</code></pre>
+<p>the system stores each unique string only once:</p>
+<pre><code>  open  -&gt; id 1
+  close -&gt; id 2
+</code></pre>
+<p>Every occurrence of <b>"open"</b> then references the same interned entry.</p>
+<p>This has several advantages: faster comparisons (pointer or integer comparison instead of <b>strcmp</b>), reduced memory usage, stable identifiers for strings used as keys or symbols
+Using <b>bake</b>, these intern tables can be generated ahead of time and compiled directly into the program.</p>
+<h3 id="doxter">doxter</h3>
+<p><a href="https://github.com/marciovmf/stdx/tree/main/demo/doxter">doxter</a> is the documentation generator used for STDX itself.</p>
+<p>It parses specially formatted comments inside the headers and produces the documentation available <a href="&quot;https://handmadegame.dev/stdx&quot;">here</a> .
+The tool was designed specifically for this project, with the goal of keeping the documentation process simple and tightly integrated with the code.
+Like the rest of the project, it avoids heavy dependencies and focuses on straightforward processing of the source files.</p>
+<hr/>
+        </header>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2023 Márcio Freitas</div>
+  <div class="footer-meta">Generated with static.</div>
+</footer>
+  </body>
+</html>
