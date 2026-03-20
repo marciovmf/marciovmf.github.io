@@ -169,8 +169,6 @@ The embedding model is straightforward:
 
 Check the project's README for more details.
 
-#### 1) Initialize runtime state
-
 ```
 XArena *arena = x_arena_create(8 * 1024);
 MiContext ctx;

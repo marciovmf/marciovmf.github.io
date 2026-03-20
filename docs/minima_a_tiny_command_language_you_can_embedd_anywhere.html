@@ -124,7 +124,6 @@ foreach item $xs {
 <p>Minima is not meant to be a standalone language. It’s meant to be embedded.</p>
 <p>The embedding model is straightforward:</p>
 <ol><li> Create a context  </li><li> Register built-in commands  </li><li> Register your own commands  </li><li> Parse + execute  </li></ol><p>Check the project's README for more details.</p>
-<h4 id="1-initialize-runtime-state">1) Initialize runtime state</h4>
 <pre><code>XArena *arena = x_arena_create(8 * 1024);
 MiContext ctx;
 
