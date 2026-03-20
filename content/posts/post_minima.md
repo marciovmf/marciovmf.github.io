@@ -167,7 +167,6 @@ The embedding model is straightforward:
 3. Register your own commands  
 4. Parse + execute  
 
-Check the project's README for more details.
 
 ```
 XArena *arena = x_arena_create(8 * 1024);
@@ -202,6 +201,9 @@ if (r.signal == MI_SIGNAL_ERROR) {
 x_arena_destroy(arena);
 
 ```
+
+The project's [README](https://github.com/marciovmf/stdx/blob/main/demo/minima/readme.md) covers this with more details.
+
 ---
 
 ## Why this works well in C
