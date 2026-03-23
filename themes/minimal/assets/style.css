@@ -232,18 +232,15 @@ a:hover {
   margin: 16pt 0 4pt;
 }
 
-.post code,
-.post pre {
-  background: var(--code-bg);
-}
-
 .post code {
+  background: var(--code-bg);
   font-size: 1.05em;
   padding: 0.12em 0.32em;
   border-radius: 6px;
 }
 
 .post pre {
+  background: var(--code-bg);
   margin: 16pt 0;
   padding: 18px 20px;
   border-radius: 10px;
@@ -254,8 +251,7 @@ a:hover {
   display: block;
   padding: 0;
   background: transparent;
-  font-size: 1em;
-  line-height: 1.4;
+  line-height: 1.2;
   border-radius: 0;
 }
 
