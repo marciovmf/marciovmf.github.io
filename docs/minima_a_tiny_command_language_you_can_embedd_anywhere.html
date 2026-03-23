@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HANDMADE GAMEDEV - Minima - A tiny language you can embed anywhere</title>
   <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/highlight/styles/ascetic.css">
+  <script src="assets/highlight/highlight.min.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function ()
       {
+        // Expand text of <date> tags
         const fmt = new Intl.DateTimeFormat(undefined, {
           year: "numeric",
           month: "long",
@@ -22,6 +26,9 @@
               t.textContent = fmt.format(d);
             }
           });
+
+        // Apply syntax highlight to code elements
+        hljs.highlightAll();
       });
   </script>
 </head>
