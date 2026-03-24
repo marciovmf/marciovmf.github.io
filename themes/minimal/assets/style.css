@@ -1,10 +1,11 @@
 :root {
-  --page-bg: #3a3a3a;
+  --page-bg: #3D473D; 
   --footer-color: #ffffff;
   --sheet: #ffffff;
   --text: #000;
   --muted: #666;
-  --link: #2f6f44;
+  --link: #2B7A4B;
+  --link-footer: #6FCF97;
   --link-hover: #1f5533;
   --code-bg: #f1f1f1;
   --quote-mark: #2f6f44;;
@@ -37,6 +38,14 @@ a {
   color: var(--link);
   text-decoration: underline;
   text-decoration-skip-ink: none;
+  font-weight: 500;
+}
+
+footer a {
+  color: var(--link-footer);
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  font-weight: 500;
 }
 
 a:hover {
@@ -53,31 +62,40 @@ a:hover {
   min-height: 980px;
 }
 
+
 .hero {
   padding: 2px 0 22px;
 }
 
 .hero-inner {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: start;
+  gap: 0 20px;
+}
+
+.topnav {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  padding-top: 0;
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .site-title {
+  grid-column: 1 / -1;
+  grid-row: 2;
   margin: 110px 0 0;
   font-size: clamp(3.1rem, 5vw, 4.6rem);
   font-weight: 400;
   letter-spacing: 0.03em;
   line-height: 0.95;
   color: var(--text);
-}
-
-.topnav {
-  padding-top: 0;
-  font-size: 0.92rem;
-  text-transform: uppercase;
-  white-space: nowrap;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
 }
 
 .topnav a {

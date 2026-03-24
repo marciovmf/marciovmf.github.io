@@ -1,10 +1,11 @@
 :root {
-  --page-bg: #3a3a3a;
+  --page-bg: #3D473D; 
   --footer-color: #ffffff;
   --sheet: #ffffff;
   --text: #000;
   --muted: #666;
-  --link: #2f6f44;
+  --link: #2B7A4B;
+  --link-footer: #6FCF97;
   --link-hover: #1f5533;
   --code-bg: #f1f1f1;
   --quote-mark: #2f6f44;;
@@ -37,6 +38,14 @@ a {
   color: var(--link);
   text-decoration: underline;
   text-decoration-skip-ink: none;
+  font-weight: 500;
+}
+
+footer a {
+  color: var(--link-footer);
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  font-weight: 500;
 }
 
 a:hover {
