@@ -11,16 +11,17 @@
         <section class="posts-section">
           <h2 class="section-title">Posts</h2>
           <div class="post-grid">
-            <% # List all pages from POST category
-               foreach p $all_pages {
+            <% # List all pages from POST category, sorted by date, newer first
+               set sorted_pages (page_sort newer $all_pages)
+               foreach p $sorted_pages {
                 set is_post (str equals_i (page category $p) "post")
                 if  (expr not $is_post) { continue; }
-                set date (format "$(page year $p)-$(page month $p)-$(page day $p)")
-             %>
-             <article class="post-item">
-               <a class="post-title" href="<%= (page url $p) %>"><%= (page title $p) %></a>
-               <span class="post-date"><time datetime="<%= $date %>">#</time></span>
-             </article>
+                  set date (format "$(page year $p)-$(page month $p)-$(page day $p)")
+               %>
+                <article class="post-item">
+                  <a class="post-title" href="<%= (page url $p) %>"><%= (page title $p) %></a>
+                  <span class="post-date"><time datetime="<%= $date %>">#</time></span>
+                </article>
             <% } %>
           </div>
         </section>
