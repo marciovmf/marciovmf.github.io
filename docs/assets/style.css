@@ -85,6 +85,8 @@ a:hover {
   letter-spacing: 0.03em;
   line-height: 0.95;
   color: var(--text);
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 300;
 }
 
 .topnav a {
