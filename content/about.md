@@ -11,6 +11,7 @@ category: page
 Hi there! I'm just a guy who enjoys handcrafting software.
 
 I tend to focus on low level programming, game engines, tools and games. Been doing this for over 20 years, currently working in AAA—still learning, still building.
+
 Below are some of the main project I've worked on.
 
 
