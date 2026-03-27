@@ -13,9 +13,7 @@ Good software should not be artificially complex. If the problem is small, the s
 
 Stripped down to its essence, testing is not complicated. A test suite is simply a set of function calls and a mechanism to count successes and failures. There is no fundamental requirement for frameworks, runners, or code generation. Those are tools built around the problem, not the problem itself. The core remains the same: execute code, check results, and report what happened.
 
-Out of that realization, I ended up writing the smallest possible test “framework” I could get away with: a single function and a few macros.
-
-It does not try to be clever or complete. It does not try to redefine how tests should be written. In fact, it barely qualifies as a framework at all—it is just a thin layer over what C already gives you: functions, return values, and control over execution.
+Out of that realization, I put together a very simple test machinery to handle the tests of the entire STDX library. It does not try to be clever. It does not try to be complete. It does not try to redefine how tests should be written. It simply embraces what C already gives you: functions, return values, and control over execution.
 
 It is small, self-contained, and honest about what it is. A minimal unit test framework built around a tiny runner, a handful of assertion macros, readable output, and just enough crash diagnostics to be useful.
 
@@ -26,15 +24,21 @@ And in software, “enough” is a quality worth protecting.
 
 ## STDX tests
 
-The result of that thinking is what I now use across the entire [STDX library](https://handmadegame.dev/stdx_my_standard_c_library.html).
+This tiny test library is part of the [STDX library](https://handmadegame.dev/stdx_my_standard_c_library.html) I wrote to become **my** standard library.
 
-The library follows the single-header style. You include `stdx_test.h` wherever you need the declarations, and in one translation unit you define `X_IMPL_TEST` before including it to compile the implementation. 
+The library follows the single-header style. You include `stdx_test.h` wherever you need the declarations, and in one translation unit you define `X_IMPL_TEST` before including it to compile the implementation. Under the hood, the header pulls in the logging and timing modules it depends on. If their implementations are not already compiled elsewhere, it enables them internally. In practice, that means you get a complete test setup from a single include and a single define. No package manager, no external dependency, no build ceremony.
+
+The model is intentionally direct. A test is just a function returning `int32_t`. Zero means success. Non-zero means failure. Test cases are described with a small struct containing a name and a function pointer, and the `X_TEST(name)` macro turns a function into a test entry without noise.
+
+This is a design that respects C instead of trying to abstract it away.
+
+---
+
+## What `stdx_test.h` Actually Does
 
 One of the things I like most about `stdx_test.h` is that there is no illusion here. It is not a giant framework disguised as a header. It is, essentially, one runner function plus a handful of macros wrapped around plain C functions. That is not a criticism. In fact, that is the point. The whole library is small enough that most C programmers could write something similar themselves in an afternoon. `stdx_test.h` just packages that idea into a reusable, consistent form. 
 
-
-At the type level, the model is almost as small as it can be. **A test is just a function pointer** returning `int32_t`, and a test case is just a name paired with that function pointer.
-The `X_TEST(name)` macro is only a convenience that turns a function into a `{ "name", name }` entry. 
+At the type level, the model is almost as small as it can be. A test is just a function pointer returning `int32_t`, and a test case is just a name paired with that function pointer. The `X_TEST(name)` macro is only a convenience that turns a function into a `{ "name", name }` entry. 
 
 ```
 typedef int32_t (*STDXTestFunction)();
@@ -51,74 +55,103 @@ typedef struct
 
 That is the registration system. Just an array of structs.
 
-The assertion layer is equally direct. Each `ASSERT_*` macro checks a condition, logs an error through `x_log_error`, and immediately returns `1` from the current test function on failure. `ASSERT_FALSE` is just `ASSERT_TRUE(!(expr))`. `ASSERT_NEQ` is the same idea inverted. `ASSERT_FLOAT_EQ` does one extra thing: it compares with a fixed epsilon, defined as `0.1f`. The value can be overridden if needed. 
+The assertion layer is equally direct. Each `ASSERT_*` macro checks a condition, logs an error through `x_log_error`, and immediately returns `1` from the current test function on failure. `ASSERT_FALSE` is just `ASSERT_TRUE(!(expr))`. `ASSERT_NEQ` is the same idea inverted. `ASSERT_FLOAT_EQ` does one extra thing: it compares with a fixed epsilon, defined as `0.1f`. You could of course override this value on your tests. 
+
 
 ```
-#define ASSERT_TRUE(expr) do {   if (!(expr)) {     x_log_error("\t%s:%d: Assertion failed: %s\n", __FILE__, __LINE__, (#expr));     return 1;   } } while (0)
+#define ASSERT_TRUE(expr) do { \
+  if (!(expr)) { \
+    x_log_error("\t%s:%d: Assertion failed: %s\n", __FILE__, __LINE__, (#expr)); \
+    return 1; \
+  } \
+} while (0)
 
 #define ASSERT_FALSE(expr) ASSERT_TRUE(!(expr))
 
-#define ASSERT_EQ(actual, expected) do {   if ((actual) != (expected)) {     x_log_error("\t%s:%d: Assertion failed: %s == %s", __FILE__, __LINE__, #actual, #expected);     return 1;   } } while (0)
+#define ASSERT_EQ(actual, expected) do { \
+  if ((actual) != (expected)) { \
+    x_log_error("\t%s:%d: Assertion failed: %s == %s", __FILE__, __LINE__, #actual, #expected); \
+    return 1; \
+  } \
+} while (0)
 
 #define X_TEST_FLOAT_EPSILON 0.1f
 
-#define ASSERT_FLOAT_EQ(actual, expected) do {   if (fabs((actual) - (expected)) > X_TEST_FLOAT_EPSILON) {     x_log_error("\t%s:%d: Assertion failed: %s == %s", __FILE__, __LINE__, #actual, #expected);     return 1;   } } while (0)
+#define ASSERT_FLOAT_EQ(actual, expected) do { \
+  if (fabs((actual) - (expected)) > X_TEST_FLOAT_EPSILON) { \
+    x_log_error("\t%s:%d: Assertion failed: %s == %s", __FILE__, __LINE__, #actual, #expected); \
+    return 1; \
+  } \
+} while (0)
 
-#define ASSERT_NEQ(actual, expected) do {   if ((actual) == (expected)) {     x_log_error("\t%s:%d: Assertion failed: %s != %s", __FILE__, __LINE__, #actual, #expected);     return 1;   } } while (0)
+#define ASSERT_NEQ(actual, expected) do { \
+  if ((actual) == (expected)) { \
+    x_log_error("\t%s:%d: Assertion failed: %s != %s", __FILE__, __LINE__, #actual, #expected); \
+    return 1; \
+  } \
+} while (0)
 ```
 
 That is really the heart of the “framework.” A test is just a function, and the assertions are just early-return helpers with logging.
 
-The runner itself is a single function: `x_tests_run(STDXTestCase* tests, int32_t num_tests)`. It installs signal handlers for a few common crash signals, loops over the test array, times each test with `XTimer`, prints a colored PASS or FAIL line, counts how many passed, and then prints a final summary. Its return value is also simple: zero when everything passed, non-zero otherwise.
+The runner itself is a single function: `x_tests_run(STDXTestCase* tests, int32_t num_tests)`. It installs signal handlers for a few common crash signals, loops over the test array, times each test with `XTimer`, prints a colored PASS or FAIL line, counts how many passed, and then prints a final summary. Its return value is also simple: zero when everything passed, non-zero otherwise. 
 
 ```
 int x_tests_run(STDXTestCase* tests, int32_t num_tests)
-{
-  // Setup signal handlers to report crashes (SIGSEGV, SIGABRT, etc.)
+{ 
 
-  int32_t passed = 0;
+  // We trap signals to be able to report properly in case of crashes
+  signal(SIGABRT, s_tests_on_signal); 
+  signal(SIGFPE,  s_tests_on_signal);
+  signal(SIGILL,  s_tests_on_signal);
+  signal(SIGINT,  s_tests_on_signal);
+  signal(SIGSEGV, s_tests_on_signal);
+  signal(SIGTERM, s_tests_on_signal);
+
+  int32_t passed = 0; 
   double total_time = 0;
-
   for (int32_t i = 0; i < num_tests; ++i)
   {
-    // Ensure clean output ordering
     fflush(stdout);
 
-    // Start timing the test
-
-    // Execute the test function
+    XTimer timer;
+    x_timer_start(&timer);
     int32_t result = tests[i].func();
-
-    // Measure elapsed time in milliseconds and save the total time
-
+    XTime elapsed = x_timer_elapsed(&timer);
+    const double milliseconds = x_time_milliseconds(elapsed);
     total_time += milliseconds;
 
     if (result == 0)
     {
-      // Print PASS output
+      XLOG_WHITE(" [", 0);
+      XLOG_GREEN("PASS", 0);
+      XLOG_WHITE("]  %d/%d\t %f ms -> %s\n", i+1, num_tests, milliseconds, tests[i].name);
       passed++;
     }
     else
     {
-      // Print FAIL output
+      XLOG_WHITE(" [", 0);
+      XLOG_RED("FAIL", 0);
+      XLOG_WHITE("]  %d/%d\t %f ms -> %s\n", i+1, num_tests, milliseconds, tests[i].name);
     }
   }
 
-  // Print final summary (passed/failed + total time)
+  if (passed == num_tests)
+    XLOG_GREEN(" Tests passed: %d / %d  - total time %f ms\n", passed, num_tests, total_time);
+  else
+    XLOG_RED(" Tests failed: %d / %d - total time %f ms\n", num_tests - passed, num_tests, total_time);
 
-  // Return non-zero if any test failed
   return passed != num_tests;
 }
 ```
 
 So when I say this library is tiny, I mean it quite literally. Conceptually, it is just this:
+ - A test is a function.
+ - A test suite is an array of `{ name, function }`.
+ - An assertion is an `if` plus a log plus `return 1`.
+ - The runner loops, times, prints, counts, and returns success or failure.
+ - That is all. And for a lot of C projects, that is exactly enough.
 
-- A test is a function.
-- A test suite is an array of `{ name, function }`.
-- An assertion is an `if`, a log, and a `return 1`.
-- The runner loops, times, prints, counts, and returns success or failure.
-
-That is all. And for a lot of C projects, that is exactly enough.
 
 ## Writing Tests Feels Like Writing Code
 
@@ -297,8 +330,9 @@ create_test(TARGET test_math SOURCES tests/test_math.c)
 
 And finally:
 
+
 ```
-build_and_run_tests()
+    build_and_run_tests()
 ```
 
 That is the entire system.
@@ -316,5 +350,4 @@ Most unit tests in C do not need a complex ecosystem. They need a clear way to e
 It does not try to abstract C into something else. It embraces it. Tests are functions. Failures are explicit. The build system remains simple. The entire setup can be understood in minutes. That kind of clarity is rare, and worth preserving.
 
 Good software is not the one with the most features. It is the one that solves the problem without pretending the problem is bigger than it really is.
-
-Most of the time, testing in C is not a big problem.
+Most of the time, testing in is not a big problem.

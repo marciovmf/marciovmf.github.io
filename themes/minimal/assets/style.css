@@ -231,11 +231,16 @@ a:hover {
   margin: 0 0 4pt;
 }
 
-.post p,
 .post li {
   margin: 0 0 3pt 0;
   font-size: 12pt;
   line-height: 1.4;
+}
+
+.post p {
+  margin: 0 0 0.9rem 0;
+  font-size: 12pt;
+  line-height: 1.5;
 }
 
 .post h2 {
