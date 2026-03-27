@@ -8,8 +8,9 @@ category: page
 
 # It's a me, Márcio!
 
-Hi there! I'm Márcio Freitas, a brazilian game developer passionate about game/engine development and low level programming.
+Hi there! I'm just a guy who enjoys handcrafting software.
 
+I tend to focus on low level programming, game engines, tools and games. Been doing this for over 20 years, currently working in AAA—still learning, still building.
 Below are some of the main project I've worked on.
 
 
@@ -23,7 +24,7 @@ The fourth installment in the sci-fi first-person shooter franchise *Crysis* is 
 
 ## Crysis Remastered Trilogy
 
- <iframe src="https://www.youtube.com/embed/PQ_dmFUR2N8?si=kcnDjmVZtAJJ029y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/zSFLMW5d_6w?si=0NdWfks8ltoqcJpd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 The single-player remasters of *Crysis*, *Crysis 2*, and *Crysis 3*. Each legendary game in this all-in-one collection has been optimized and enhanced to play faster and better than ever before.
 
