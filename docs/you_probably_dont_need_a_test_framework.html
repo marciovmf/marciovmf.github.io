@@ -1,11 +1,11 @@
-<!doctype html>
-<html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HANDMADE GAMEDEV - You Probably Don’t Need a Test Framework</title>
   <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/highlight/styles/ascetic.css">
+  <link rel="stylesheet" href="assets/highlight/styles/isbl-editor-light.min.css">
   <script src="assets/highlight/highlight.min.js"></script>
 
   <script>
@@ -32,8 +32,8 @@
       });
   </script>
 </head>
-  <body>
-    <div class="page">
+  <body>
+    <div class="page">
 <header class="hero">
   <div class="hero-inner">
     <h1 class="site-title">HANDMADE GAMEDEV</h1>
@@ -45,12 +45,13 @@
     </nav>
   </div>
 </header>
-      <article class="post">
-        <p class="backlink"><a href="index.html">← Back to posts</a></p>
-        <header class="post-header">
-          <h1 class="post-title">You Probably Don’t Need a Test Framework</h1>
-          <p class="post-meta"><time datetime="2026-3-27">??</time></p>
-          <p class="post-meta"></p>
+      <article class="post">
+        <header class="post-header">
+          <p class="post-meta"><time datetime="2026-3-27">??</time></p>
+          <h1 class="post-title">You Probably Don’t Need a Test Framework</h1>
+          <!-- <p class="post-meta">Unknown</p> -->
+        </header>
+
 <p>There is a quiet kind of satisfaction in removing complexity rather than adding it. Not because simplicity is trendy, but because most of the time, the problem never required the machinery we instinctively reach for. Unit testing in C is one of those areas where people often overcomplicate things. They bring in frameworks, runners, generators, and layers of abstraction… when all they really need is the ability to call functions and observe outcomes. That mismatch has always bothered me.</p>
 <p>Good software should not be artificially complex. If the problem is small, the solution should have the courage to stay small. And yet, this is exactly where things tend to spiral. A handful of tests turns into a dependency. The dependency turns into a build concern. The build concern turns into configuration, conventions, and rules that have very little to do with the original problem. At some point, the cost of testing starts competing with the value of the tests themselves.</p>
 <p>Stripped down to its essence, testing is not complicated. A test suite is simply a set of function calls and a mechanism to count successes and failures. There is no fundamental requirement for frameworks, runners, or code generation. Those are tools built around the problem, not the problem itself. The core remains the same: execute code, check results, and report what happened.</p>
@@ -287,9 +288,9 @@ endfunction()
 <p>It does not try to abstract C into something else. It embraces it. Tests are functions. Failures are explicit. The build system remains simple. The entire setup can be understood in minutes. That kind of clarity is rare, and worth preserving.</p>
 <p>Good software is not the one with the most features. It is the one that solves the problem without pretending the problem is bigger than it really is.</p>
 <p>Most of the time, testing in C is not a big problem.</p>
-        </header>
-      </article>
-    </div>
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+      </article>
+    </div>
 <footer class="footer">
   <div class="footer-nav">
       <a href="index.html">Home</a> |
@@ -300,5 +301,5 @@ endfunction()
   <div class="footer-meta">© 2025 Márcio Freitas</div>
   <div class="footer-meta">Generated with <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</div>
 </footer>
-  </body>
-</html>
+  </body>
+</html>

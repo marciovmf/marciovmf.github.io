@@ -1,11 +1,11 @@
-<!doctype html>
-<html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HANDMADE GAMEDEV - STDX - My Standard C Library</title>
   <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/highlight/styles/ascetic.css">
+  <link rel="stylesheet" href="assets/highlight/styles/isbl-editor-light.min.css">
   <script src="assets/highlight/highlight.min.js"></script>
 
   <script>
@@ -32,8 +32,8 @@
       });
   </script>
 </head>
-  <body>
-    <div class="page">
+  <body>
+    <div class="page">
 <header class="hero">
   <div class="hero-inner">
     <h1 class="site-title">HANDMADE GAMEDEV</h1>
@@ -45,12 +45,13 @@
     </nav>
   </div>
 </header>
-      <article class="post">
-        <p class="backlink"><a href="index.html">← Back to posts</a></p>
-        <header class="post-header">
-          <h1 class="post-title">STDX - My Standard C Library</h1>
-          <p class="post-meta"><time datetime="2026-3-11">??</time></p>
-          <p class="post-meta"></p>
+      <article class="post">
+        <header class="post-header">
+          <p class="post-meta"><time datetime="2026-3-11">??</time></p>
+          <h1 class="post-title">STDX - My Standard C Library</h1>
+          <!-- <p class="post-meta">Unknown</p> -->
+        </header>
+
 <p>About two years ago I decided that I would use <b>C instead of C++ for my personal projects</b>. Life is too short to program C++ at work <em>and</em> in personal projects.</p>
 <p>Because of that decision I quickly found myself reimplementing the same basic functionality over and over again: arenas, hash tables, filesystem utilities, string helpers, and similar infrastructure.
 Eventually I decided to stop rewriting these pieces in every project and instead implement them once in a reusable way.
@@ -108,9 +109,9 @@ Using <b>bake</b>, these intern tables can be generated ahead of time and compil
 The tool was designed specifically for this project, with the goal of keeping the documentation process simple and tightly integrated with the code.
 Like the rest of the project, it avoids heavy dependencies and focuses on straightforward processing of the source files.</p>
 <hr/>
-        </header>
-      </article>
-    </div>
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+      </article>
+    </div>
 <footer class="footer">
   <div class="footer-nav">
       <a href="index.html">Home</a> |
@@ -121,5 +122,5 @@ Like the rest of the project, it avoids heavy dependencies and focuses on straig
   <div class="footer-meta">© 2025 Márcio Freitas</div>
   <div class="footer-meta">Generated with <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</div>
 </footer>
-  </body>
-</html>
+  </body>
+</html>

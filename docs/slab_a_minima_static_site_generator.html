@@ -1,11 +1,11 @@
-<!doctype html>
-<html lang="en">
+<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HANDMADE GAMEDEV - Slab - A minimal and powerful static site generator</title>
   <link rel="stylesheet" href="assets/style.css">
-  <link rel="stylesheet" href="assets/highlight/styles/ascetic.css">
+  <link rel="stylesheet" href="assets/highlight/styles/isbl-editor-light.min.css">
   <script src="assets/highlight/highlight.min.js"></script>
 
   <script>
@@ -32,8 +32,8 @@
       });
   </script>
 </head>
-  <body>
-    <div class="page">
+  <body>
+    <div class="page">
 <header class="hero">
   <div class="hero-inner">
     <h1 class="site-title">HANDMADE GAMEDEV</h1>
@@ -45,12 +45,13 @@
     </nav>
   </div>
 </header>
-      <article class="post">
-        <p class="backlink"><a href="index.html">← Back to posts</a></p>
-        <header class="post-header">
-          <h1 class="post-title">Slab - A minimal and powerful static site generator</h1>
-          <p class="post-meta"><time datetime="2026-2-25">??</time></p>
-          <p class="post-meta"></p>
+      <article class="post">
+        <header class="post-header">
+          <p class="post-meta"><time datetime="2026-2-25">??</time></p>
+          <h1 class="post-title">Slab - A minimal and powerful static site generator</h1>
+          <!-- <p class="post-meta">Unknown</p> -->
+        </header>
+
 <p>Years ago I used to have a WordPress website. It’s powerful, but also bloated, slow, and prone to breaking if you let it update itself. So I decided to move my blog to a static site.</p>
 <p>While looking for static site generators, I ran into the same problem again. Almost all of them were also bloated, requiring me to install a bunch of tools just to replace a few strings in HTML files.</p>
 <p>So I did what any sane programmer would do: I spent a weekend writing something that actually fit my needs.</p>
@@ -115,9 +116,9 @@ category: post
 <p>STDX and Minima removed most of the friction of building something like this in C. They provide the core pieces—memory management, data structures, parsing, and execution—so the implementation stays small and focused. At the same time, pushing behavior into Minima keeps the system flexible without making the core complex.</p>
 <p>Even as a demo, Slab proved to be powerful and robust enough to become my main site generator—the one used to generate this very blog.</p>
 <p>That’s a good place for an experiment to end up.</p>
-        </header>
-      </article>
-    </div>
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+      </article>
+    </div>
 <footer class="footer">
   <div class="footer-nav">
       <a href="index.html">Home</a> |
@@ -128,5 +129,5 @@ category: post
   <div class="footer-meta">© 2025 Márcio Freitas</div>
   <div class="footer-meta">Generated with <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</div>
 </footer>
-  </body>
-</html>
+  </body>
+</html>

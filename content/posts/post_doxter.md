@@ -44,6 +44,7 @@ Options
   --skip-static                    = Skip static functions.
   --skip-undocumented              = Skip undocumented symbols.
   --skip-empty-defines             = Skip empty defines.
+
 ```
 
 The interface is intentionally minimal. You point it at a configuration file, choose an output directory, pass your input files, and it generates documentation.
