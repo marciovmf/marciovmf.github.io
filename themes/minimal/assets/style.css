@@ -105,11 +105,10 @@ a:hover {
   font-weight: 300;
 }
 
-
 .site-title::after {
   content: "_";
   margin-left: 4px;
-  animation: blink 1s steps(1) infinite;
+  animation: blink 1.2s steps(1) infinite;
 }
 
 @keyframes blink {
