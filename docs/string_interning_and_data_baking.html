@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMADE GAMEDEV - String interning and data Baking</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/highlight/styles/isbl-editor-light.min.css">
+  <script src="assets/highlight/highlight.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        // Expand text of <date> tags
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+
+        // Apply syntax highlight to code elements
+        hljs.highlightAll();
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMADE GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+      <article class="post">
+        <header class="post-header">
+          <p class="post-meta"><time datetime="2026-4-7">??</time></p>
+          <h1 class="post-title">String interning and data Baking</h1>
+          <!-- <p class="post-meta">Unknown</p> -->
+        </header>
+
+<p>In game engines, large games, or any sizable codebase that relies heavily on strings as identifiers, there’s a predictable point where those strings stop being harmless.</p>
+<p>Early on, they’re convenient. You pass <code>player_idle</code> into a system, <code>diffuse.png</code> into a loader, <code>ui.click</code> into an event dispatcher. It’s readable, flexible, and it keeps the code simple. Nothing feels wrong.</p>
+<p>Then the project grows.</p>
+<p>Those same strings start to spread. They get copied across modules, subtly renamed, concatenated at runtime—sometimes normalized, sometimes not. You add asserts to catch mistakes. Then a hash function. Then a cache. Eventually someone suggests turning them into enums, and now you’re halfway into building a data pipeline you never planned.</p>
+<p>At that point, the problem isn’t just performance. It’s that strings mean different things depending on where and how they’re used.</p>
+<p>Humans use names. <code>player_jump</code> is immediately meaningful.<br/>
+Machines want something else entirely: integers, contiguous memory, predictable access.</p>
+<p>Bridging that gap at runtime always carries cost—hashing, lookups, allocations, validation—but more importantly, it creates multiple points where things can quietly diverge.</p>
+<p>The natural solution is to stop doing that work at runtime.</p>
+<p>This starts as string interning, but once moved to build time it naturally extends to identifier generation and asset embedding.</p>
+<p>After doing this by hand across multiple projects, it stopped making sense to keep doing it manually. So I wrote a tool for it: <a href="https://github.com/marciovmf/stdx/tree/main/demo/bake">bake</a>.</p>
+<h2 id="the-bake-approach">The Bake Approach</h2>
+<p>Instead of letting your program interpret strings while it runs, you describe your identifiers once in a small, structured file, and the tool generates a C header that your code consumes directly.</p>
+<p>At that point, strings stop being runtime inputs and become build artifacts.</p>
+<h2 id="how-the-input-becomes-code">How the Input Becomes Code</h2>
+<p>The input file defines the identifiers and how they are constructed.</p>
+<pre><code title="ini">guard = GAME_IDS
+
+[animation]
+idle = player_idle
+run  = player_run
+
+[sound]
+click = @assets/ui/click.wav
+hover = @@assets/ui/hover.wav
+</code></pre>
+<p>Each entry generates a symbol composed from three parts:</p>
+<pre><code>&lt;guard&gt;_&lt;section&gt;_&lt;key&gt;
+</code></pre>
+<p>So:</p>
+<pre><code title="ini">[sound]
+click = ...
+</code></pre>
+<p>becomes:</p>
+<pre><code title="c">GAME_IDS_SOUND_CLICK
+</code></pre>
+<p>Sections are not just grouping—they are part of the identifier. This gives you namespacing without relying on conventions or manual prefixes.</p>
+<h2 id="values-strings-and-assets">Values: Strings and Assets</h2>
+<p>Entries define what gets embedded in the generated output.</p>
+<p>A plain value:</p>
+<pre><code title="ini">[animation]
+idle = player_idle
+</code></pre>
+<p>becomes:</p>
+<pre><code title="c">#define GAME_IDS_ANIMATION_IDLE 0u                // sequential ID
+#define GAME_IDS_ANIMATION_IDLE_STR "player_idle" // stored value
+#define GAME_IDS_ANIMATION_IDLE_LEN 11u           // length in bytes
+#define GAME_IDS_ANIMATION_IDLE_HASH 0x97F56434u  // hash of the value
+</code></pre>
+<p>The identifier is built from the section and key (<code>animation.idle</code> → <code>ANIMATION_IDLE</code>), while the value (<code>player_idle</code>) is what gets stored.</p>
+<p>A file reference is a file path prefixed with <code>@</code> or <code>@@</code>:</p>
+<pre><code title="ini">[sound]
+click = @@assets/ui/click.wav
+</code></pre>
+<p>The <code>@</code> prefix tells the tool to read the file at build time and embed its contents as raw bytes.<br/>
+Using <code>@@</code> does the same, but ensures a null terminator immediately after the data.</p>
+<p>This generates:</p>
+<pre><code title="c">#define GAME_IDS_SOUND_CLICK 58u                          // unique ID
+#define GAME_IDS_SOUND_CLICK_PATH "assets/ui/click.wav"   // stored value
+#define GAME_IDS_SOUND_CLICK_HASH 0x110D2028u             // hash of the path 
+#define GAME_IDS_SOUND_CLICK_FILE_SIZE 317u               // file size
+#define GAME_IDS_SOUND_CLICK_SIZE 318u                    // file content array size
+
+static const unsigned char GAME_IDS_SOUND_CLICK_BYTES[] =
+{
+  0x52u, 0x49u, 0x46u, 0x46u, ...
+  0x00u // present when using @@ instead of @
+};
+
+#define GAME_IDS_SOUND_CLICK_CSTR ((const char*)GAME_IDS_SOUND_CLICK_BYTES)
+</code></pre>
+<p>From a single entry, the tool produces a stable identifier and the corresponding data, already embedded and sized, with the original path preserved if needed.</p>
+<p>Everything is resolved at build time. There is no parsing, no lookup, and no file I/O related to these identifiers at runtime.</p>
+<h2 id="using-it-in-code">Using It in code</h2>
+<p>Once you set up your <em>bake\</em>file_ as described above you pass it as argument to the tool along with other options and the name of the header file to be generated with the interned content.
+The tool itself is intentionally simple:</p>
+<pre><code>Command Line Usage
+usage:
+  bake.exe &lt;input.ini&gt; [-o out.h]
+
+The input INI file describes strings and files to bake into a C header.
+
+Entries are grouped into [sections].
+IDs are assigned globally by order of appearance.
+
+Entry forms inside a [section]:
+  KEY = "string"      # Intern a string (quotes optional)
+  KEY = @path         # Embed file bytes (path is relative to the .ini file)
+  KEY = @@path        # Embed file bytes and append a null terminator. (path is relative to the .ini file)
+
+</code></pre>
+<p>After generating the header, just include in and use string IDs instead of strigns whenever you want.
+Instead of:</p>
+<pre><code title="c">load_asset("assets/ui/click.wav");
+</code></pre>
+<p>you write:</p>
+<pre><code title="c">load_asset(GAME_IDS_SOUND_CLICK_PATH);
+</code></pre>
+<p>If you need the file contents or extra information, don't forget the additional
+macros that get generated for every entry as discussed previously.:</p>
+<pre><code title="c">upload_sound(
+    GAME_IDS_SOUND_CLICK,
+    GAME_IDS_SOUND_CLICK_BYTES,
+    GAME_IDS_SOUND_CLICK_FILE_SIZE
+);
+</code></pre>
+<p>There is no lookup step. The identifier, the data, and the metadata are already resolved.</p>
+<h2 id="what-you-get-from-this">What You Get From This</h2>
+<p>The immediate effect is that all identifiers become compile-time constants.
+Mistakes stop being runtime problems. If you remove or rename an entry in the INI, every use site breaks at compile time.
+There is no longer a distinction between “name” and “resolved data”. By the time your program runs, that translation has already happened.</p>
+<p>Access becomes direct. An identifier is just an integer, and the associated data is just memory.
+Performance improves, but only as a consequence of removing that entire class of work.</p>
+<h2 id="tradeoffs">Tradeoffs</h2>
+<p>This only works if your data is known at build time. You cannot construct new identifiers dynamically, and you cannot load arbitrary user-provided names through this system. If your program depends on that, you still need a runtime path. Embedding files increases binary size, and changing the input requires recompilation. Identifiers depend on input order unless you explicitly stabilize them.</p>
+<h2 id="build-integration">Build Integration</h2>
+<p>String interning and asset baking should happen in during build phase. Whenever the input file changes, regenerate the header before compiling. Once that is in place, there is no runtime initialization or registration step. The program starts with everything already defined.</p>
+<p>In my <a href="doxter_no_nonsense_c_documentation_generator.html">C code documentation tool</a>, I used <b>bake</b> to embed HTML templates at build time, eliminating external file dependencies and allowing the program to be distributed as a single executable. Here’s how it integrates with the project’s CMake rules:</p>
+<pre><code># We use the demo/bake tool to bake templates, fonts and strings 
+set(BAKE_EXE tools/bake.exe)
+set(BAKE_TEMPLATE_INPUT src/doxter_template.bake)
+set(BAKE_TEMPLATE_OUTPUT src/generated/doxter_template.h)
+
+add_custom_command(
+  OUTPUT ${BAKE_TEMPLATE_OUTPUT}
+  COMMAND ${BAKE_EXE} ${BAKE_TEMPLATE_INPUT} -o ${BAKE_TEMPLATE_OUTPUT}
+  DEPENDS ${BAKE_TEMPLATE_INPUT}
+  COMMENT "[BAKE] templates: ${BAKE_TEMPLATE_INPUT} -&gt; ${BAKE_TEMPLATE_OUTPUT}" 
+  VERBATIM
+)
+</code></pre>
+<p>Nothing special here. Just be sure the tool runs whenever the .bake file changes.</p>
+<h2 id="closing">Closing</h2>
+<p>There isn’t much else to it. Once you see the problem clearly, the direction becomes obvious. Having a tool for it is a useful addition to the toolbox.</p>
+        <p class="backlink"><a href="index.html">← Back to posts</a></p>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2025 Márcio Freitas</div>
+  <div class="footer-meta">Generated with <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</div>
+</footer>
+  </body>
+</html>
