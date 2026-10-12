@@ -57,7 +57,7 @@ Build systems, build time optimization, and core engine work on Hunt: Showdown.
 
 ## Looney Tunes: World of Mayhem
 
-<iframe src="https://youtu.be/aQ9OiKNR2z4?si=Z0LAr_QQMJ2q5wyN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/watch?v=aQ9OiKNR2z4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Developed by [Aquiris](https://www.aquiris.com.br/) and published by [Scopely](https://scopely.com/).
 
