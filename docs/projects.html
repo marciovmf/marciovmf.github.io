@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HANDMADE GAMEDEV - Projects</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/highlight/styles/isbl-editor-light.min.css">
+  <script src="assets/highlight/highlight.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function ()
+      {
+        // Expand text of <date> tags
+        const fmt = new Intl.DateTimeFormat(undefined, {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        });
+
+        document.querySelectorAll("time[datetime]").forEach(function (t)
+          {
+            const d = new Date(t.dateTime);
+            if (!isNaN(d))
+            {
+              t.textContent = fmt.format(d);
+            }
+          });
+
+        // Apply syntax highlight to code elements
+        hljs.highlightAll();
+      });
+  </script>
+</head>
+  <body>
+    <div class="page">
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="site-title">HANDMADE GAMEDEV</h1>
+    <nav class="topnav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="about.html">About</a>
+      <a href="https://x.com/marciovmf">Twitter</a>
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+    </nav>
+  </div>
+</header>
+<h1 id="projects">Projects</h1>
+<p>Most of my personal projects started because I needed something, wanted to understand how something worked, or simply wasn't happy with the tools available.</p>
+<p>Some are things I use every day. Others began as experiments and became useful along the way.</p>
+<hr/>
+<h2 id="ldk">LDK</h2>
+<p><img class="project-image" src="assets/images/projects/ldk-editor.png" alt="LDK editor"></p>
+<p>LDK is a 3D game engine I'm building from scratch in C, primarily for my own games.</p>
+<p>It has an entity-component system, an integrated editor, rendering, asset management, and tools for building game projects. The editor and the runtime use the same underlying systems, and game code is just C code.</p>
+<p>I'm not trying to build a universal engine. I want an engine where I can understand what's going on, change things when they don't work, and avoid adding abstractions just to hide the ones already there.</p>
+<p>It's still a work in progress, and that's part of the fun.</p>
+<p><a href="https://github.com/marciovmf/ldk">Source code</a></p>
+<hr/>
+<h2 id="stdx">STDX</h2>
+<p><img class="project-image" src="assets/images/projects/project_1.png" alt="STDX example"></p>
+<p>A few years ago I decided to use C instead of C++ for my personal projects. I quickly found myself writing the same basic utilities over and over again.</p>
+<p>STDX is what came out of that: a collection of small, independent, single-header C99 libraries for memory management, containers, strings, filesystems, threading, networking, and other common tasks.</p>
+<p>It's not an attempt to turn C into something else. I just wanted a set of tools that made writing C more convenient without getting in the way. These days, most of my other projects are built on top of it.</p>
+<p><a href="https://github.com/marciovmf/stdx">Source code</a> | <a href="https://handmadegame.dev/stdx/">Documentation</a> | <a href="https://handmadegame.dev/stdx_my_standard_c_library.html">Article</a></p>
+<hr/>
+<h2 id="slab">Slab</h2>
+<p><img class="project-image" src="assets/images/projects/project_2.png" alt="Slab template and generated page"></p>
+<p>Slab is a small static site generator written in C, built using STDX and Minima.</p>
+<p>I had already written a static site generator before, but after building Minima I wanted to try using it in a real application. A site generator turned out to be a good excuse.</p>
+<p>Instead of inventing a complicated template language, Slab uses Minima to execute the templates. The result is a small command-line tool that takes Markdown, HTML, and templates and produces a static website.</p>
+<p>This blog is generated with Slab.</p>
+<p><a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Source code</a> | <a href="https://handmadegame.dev/slab_a_minima_static_site_generator.html">Article</a></p>
+<hr/>
+<h2 id="minima">Minima</h2>
+<p><img class="project-image" src="assets/images/projects/project_3.png" alt="Minima script and output"></p>
+<p>Minima is a tiny scripting language designed to be embedded in C applications.</p>
+<p>It started as a way to put STDX through its paces. An interpreter seemed like a good way to exercise parsing, memory management, and data structures all at once. Then it turned out to be useful for more than testing.</p>
+<p>The basic idea is that everything is a command. Even things like <code>if</code> and <code>foreach</code> are commands, not special language constructs. Applications can add their own commands without changing the parser or inventing another layer of syntax.</p>
+<p><a href="https://github.com/marciovmf/stdx/tree/main/demo/minima">Source code</a> | <a href="https://handmadegame.dev/minima_a_tiny_command_language_you_can_embedd_anywhere.html">Article</a></p>
+<hr/>
+<h2 id="doxter">Doxter</h2>
+<p><img class="project-image" src="assets/images/projects/project_4.png" alt="Doxter generated documentation"></p>
+<p>Doxter is a documentation generator for C projects. It reads source files, extracts documentation comments, and generates static HTML pages.</p>
+<p>Like Minima, it started as a demo for STDX. I wanted a real application to test the library, but I didn't see much point in writing something I would never use again.</p>
+<p>Doxter doesn't try to understand every corner of C. It follows a small set of conventions, keeps the documentation next to the code, and stays out of the way.</p>
+<p>It's also the tool used to generate STDX's documentation.</p>
+<p><a href="https://github.com/marciovmf/stdx/tree/main/demo/doxter">Source code</a> | <a href="https://handmadegame.dev/stdx/">Documentation example</a> | <a href="https://handmadegame.dev/doxter_no_nonsense_c_documentation_generator.html">Article</a></p>
+      </article>
+    </div>
+<footer class="footer">
+  <div class="footer-nav">
+      <a href="index.html">Home</a> |
+      <a href="projects.html">Projects</a> |
+      <a href="about.html">About</a> |
+      <a href="https://x.com/marciovmf">Twitter</a> |
+      <a href="https://discord.gg/39Ch8yKxS4">Discord</a>
+  </div>
+  <div class="footer-meta">© 2025 Márcio Freitas</div>
+  <div class="footer-meta">Generated with <a href="https://github.com/marciovmf/stdx/tree/main/demo/slab">Slab</a>.</div>
+</footer>
+  </body>
+</html>

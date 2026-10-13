@@ -156,6 +156,16 @@ a:hover {
   font-weight: 700;
 }
 
+/* Images in static pages (About / Projects) */
+.copy img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 16pt 0;
+  border-radius: 10px;
+}
+
 .quote {
   position: relative;
   margin: 1.6rem 0 1rem;
@@ -185,6 +195,16 @@ a:hover {
 .post li {
   margin: 0 0 4pt 0;
   line-height: 1.25;
+}
+
+/* Images embedded in Projects (same page template as About). */
+img.project-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 16pt 0;
+  border-radius: 10px;
 }
 
 /* ----------------------------- */
