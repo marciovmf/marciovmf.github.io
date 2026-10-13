@@ -27,6 +27,7 @@ I'm not trying to build a universal engine. I want an engine where I can underst
 It's still a work in progress, and that's part of the fun.
 
 [Source code](https://github.com/marciovmf/ldk)
+[Documentation](https://handmadegame.dev/ldk)
 
 ---
 
